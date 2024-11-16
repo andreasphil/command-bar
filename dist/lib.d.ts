@@ -1,3 +1,11 @@
+/**
+ * Takes an SVG string and converts it into an HTML element. Useful for
+ * displaying icons in the command bar.
+ *
+ * @param {string} svg
+ * @returns {HTMLElement}
+ */
+export function renderSvgFromString(svg: string): HTMLElement;
 /** @extends {C8<CommandBarAttrs, CommandBarRefs, never>} */
 export class CommandBar extends C8<CommandBarAttrs, CommandBarRefs, never> {
     static disabledFeatures: string[];
@@ -5,15 +13,24 @@ export class CommandBar extends C8<CommandBarAttrs, CommandBarRefs, never> {
     static attrs: import("@andreasphil/c8").Attrs<CommandBarAttrs>;
     /** @type {Array<keyof HTMLElementEventMap>} */
     static events: Array<keyof HTMLElementEventMap>;
-    static get instance(): Element;
+    static get instance(): CommandBar;
     constructor();
-    connectedCallback(): void;
     disconnectedCallback(): void;
     /**
      * @template {keyof CommandBarAttrs} T
      * @param {T} name
      */
     attributeChangedCallback<T extends keyof CommandBarAttrs>(name: T): void;
+    /**
+     * @private Cannot be strictly private for Vue compat reasons, but should be
+     *  treated as internal.
+     */
+    private updatePlaceholder;
+    /**
+     * @private Cannot be strictly private for Vue compat reasons, but should be
+     *  treated as internal.
+     */
+    private updateEmptyMessage;
     open(initialQuery?: string): void;
     onDialogClose(): void;
     /**
