@@ -165,8 +165,8 @@ export class CommandBar extends C8 {
       signal: this.#disconnectedController.signal,
     });
 
-    this.#updatePlaceholder();
-    this.#updateEmptyMessage();
+    this.updatePlaceholder();
+    this.updateEmptyMessage();
   }
 
   disconnectedCallback() {
@@ -180,10 +180,10 @@ export class CommandBar extends C8 {
   attributeChangedCallback(name) {
     switch (name.toLowerCase()) {
       case "placeholder":
-        this.#updatePlaceholder();
+        this.updatePlaceholder();
         break;
       case "emptymessage":
-        this.#updateEmptyMessage();
+        this.updateEmptyMessage();
         break;
     }
   }
@@ -267,12 +267,20 @@ export class CommandBar extends C8 {
    * Rendering                                          *
    * -------------------------------------------------- */
 
-  #updatePlaceholder() {
+  /**
+   * @private Cannot be strictly private for Vue compat reasons, but should be
+   *  treated as internal.
+   */
+  updatePlaceholder() {
     this.ref("searchLabel").textContent = this.attrs.placeholder;
     this.ref("search").setAttribute("placeholder", this.attrs.placeholder);
   }
 
-  #updateEmptyMessage() {
+  /**
+   * @private Cannot be strictly private for Vue compat reasons, but should be
+   *  treated as internal.
+   */
+  updateEmptyMessage() {
     this.ref("emptyMessage").textContent = this.attrs.emptyMessage;
   }
 
