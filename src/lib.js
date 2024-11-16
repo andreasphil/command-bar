@@ -139,13 +139,15 @@ export class CommandBar extends C8 {
 
   static get instance() {
     const instance = document.querySelectorAll(this.tag);
-    if (instance.length > 1) {
-      console.warn("Found multiple CommandBars. Only the first is returned.");
-    } else if (instance.length === 0) {
+
+    if (instance[0] instanceof CommandBar) {
+      if (instance.length > 1) {
+        console.warn("Found multiple CommandBars. Only the first is returned.");
+      }
+      return instance[0];
+    } else {
       throw new Error("No CommandBar instance found.");
     }
-
-    return instance[0];
   }
 
   /* -------------------------------------------------- *
