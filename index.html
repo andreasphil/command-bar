@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Command Bar Demo</title>
+    <style>
+      @import url("node_modules/@andreasphil/design-system/dist/index.min.css")
+      layer(theme);
+
+      @import url("./dist/lib.css");
+
+      #app {
+        text-align: center;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="app">
+      <h1>Command Bar Demo</h1>
+      <button id="command-bar-launcher">Press ⌘K or click here</button>
+      <command-bar></command-bar>
+      <p id="result"></p>
+    </div>
+  </body>
+
+  <script type="module">
+    import { CommandBar } from "./dist/lib.js";
+
+    CommandBar.define();
+
+    let color = "";
+    let animal = "";
+
+    function setColor(value) {
+      color = value;
+      renderOutput();
+    }
+
+    function setAnimal(value) {
+      animal = value;
+      renderOutput();
+    }
+
+    function renderOutput() {
+      document.querySelector("#result").textContent = `You selected a ${
+        color ?? ""
+      }${animal ? ` ${animal}` : " animal"}.`;
+    }
+
+    document
+      .querySelector("#command-bar-launcher")
+      .addEventListener("click", () => {
+        CommandBar.instance.open();
+      });
+
+    CommandBar.instance.registerCommand(
+      {
+        id: "red",
+        groupName: "Colors",
+        name: "Red",
+        action: () => {
+          setColor("red");
+        },
+        icon: "🔴",
+      },
+      {
+        id: "orange",
+        groupName: "Colors",
+        name: "Orange",
+        action: () => {
+          setColor("orange");
+        },
+        icon: "🟠",
+      },
+      {
+        id: "yellow",
+        groupName: "Colors",
+        name: "Yellow",
+        action: () => {
+          setColor("yellow");
+        },
+        icon: "🟡",
+      },
+      {
+        id: "green",
+        groupName: "Colors",
+        name: "Green",
+        action: () => {
+          setColor("green");
+        },
+        icon: "🟢",
+      },
+      {
+        id: "blue",
+        groupName: "Colors",
+        name: "Blue",
+        action: () => {
+          setColor("blue");
+        },
+        icon: "🔵",
+      },
+      {
+        id: "purple",
+        groupName: "Colors",
+        name: "Purple",
+        action: () => {
+          setColor("purple");
+        },
+        icon: "🟣",
+      },
+      {
+        id: "black",
+        groupName: "Colors",
+        name: "Black",
+        action: () => {
+          setColor("black");
+        },
+        icon: "⚫️",
+      },
+      {
+        id: "white",
+        groupName: "Colors",
+        name: "White",
+        action: () => {
+          setColor("white");
+        },
+        icon: "⚪️",
+      },
+      {
+        id: "crab",
+        groupName: "Animals",
+        name: "Crab",
+        alias: ["red"],
+        action: () => {
+          setAnimal("crab");
+        },
+        icon: "🦀",
+      },
+      {
+        id: "fox",
+        groupName: "Animals",
+        name: "Fox",
+        alias: ["orange"],
+        action: () => {
+          setAnimal("fox");
+        },
+        icon: "🦊",
+      },
+      {
+        id: "chick",
+        groupName: "Animals",
+        name: "Chick",
+        alias: ["yellow"],
+        action: () => {
+          setAnimal("chick");
+        },
+        icon: "🐥",
+      },
+      {
+        id: "snake",
+        groupName: "Animals",
+        name: "Snake",
+        alias: ["green"],
+        action: () => {
+          setAnimal("snake");
+        },
+        icon: "🐍",
+      },
+      {
+        id: "whale",
+        groupName: "Animals",
+        name: "Whale",
+        alias: ["blue"],
+        action: () => {
+          setAnimal("whale");
+        },
+        icon: "🐳",
+      },
+      {
+        id: "unicorn",
+        groupName: "Animals",
+        name: "Unicorn",
+        alias: ["purple"],
+        action: () => {
+          setAnimal("unicorn");
+        },
+        icon: "🦄",
+      },
+      {
+        id: "blackbird",
+        groupName: "Animals",
+        name: "Blackbird",
+        alias: ["black"],
+        action: () => {
+          setAnimal("blackbird");
+        },
+        icon: "🐦‍⬛",
+      },
+      {
+        id: "polar_bear",
+        groupName: "Animals",
+        name: "Polar bear",
+        alias: ["white"],
+        action: () => {
+          setAnimal("polar bear");
+        },
+        icon: "🐻‍❄️",
+      },
+      {
+        id: "clear_color",
+        groupName: "Reset",
+        name: "Clear color",
+        chord: "cc",
+        action: () => {
+          setColor("");
+        },
+      },
+      {
+        id: "clear_animal",
+        groupName: "Reset",
+        name: "Clear animal",
+        chord: "ca",
+        action: () => {
+          setAnimal("");
+        },
+      },
+      {
+        id: "clear_all",
+        name: "Reset",
+        action: () => {
+          setAnimal("");
+          setColor("");
+        },
+      }
+    );
+
+    new EventSource("/esbuild").addEventListener("change", () =>
+      location.reload()
+    );
+  </script>
+</html>

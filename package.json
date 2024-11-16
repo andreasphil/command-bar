@@ -1,0 +1,41 @@
+{
+  "name": "@andreasphil/command-bar",
+  "version": "0.0.0",
+  "description": "⌘K command bar web component",
+  "author": "Andreas Philippi",
+  "license": "MIT",
+  "type": "module",
+  "repository": "https://github.com/andreasphil/command-bar",
+  "files": [
+    "dist"
+  ],
+  "exports": {
+    ".": {
+      "import": "./dist/lib.js",
+      "types": "./dist/lib.d.ts"
+    },
+    "./style.css": {
+      "import": "./dist/lib.css"
+    }
+  },
+  "scripts": {
+    "dev": "node --run build:bundle -- --watch --servedir=.",
+    "test": "node --run test:build && node --test --experimental-strip-types",
+    "test:build": "esbuild src/lib.js --bundle --target=es2023 --format=esm --outdir=dist --sourcemap",
+    "test:watch": "node --run test:build && node --test --experimental-strip-types --watch",
+    "build": "node --run build:types && node --run build:bundle",
+    "build:types": "tsc",
+    "build:bundle": "esbuild src/lib.js src/lib.css --bundle --minify --target=es2023 --format=esm --outdir=dist --sourcemap",
+    "preversion": "node --run test && node --run build; git add dist/"
+  },
+  "dependencies": {
+    "@andreasphil/c8": "github:andreasphil/c8#v0.2.0",
+    "@andreasphil/design-system": "github:andreasphil/design-system#v0.36.0"
+  },
+  "devDependencies": {
+    "esbuild": "^0.24.0",
+    "jsdom": "^25.0.1",
+    "typescript": "^5.6.3"
+  },
+  "packageManager": "pnpm@9.12.3"
+}
