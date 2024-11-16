@@ -157,6 +157,8 @@ export class CommandBar extends C8 {
   #disconnectedController = new AbortController();
 
   connectedCallback() {
+    super.connectedCallback();
+
     addEventListener("keydown", (e) => this.#onToggleShortcut(e), {
       signal: this.#disconnectedController.signal,
     });
