@@ -116,7 +116,12 @@ export class CommandBar extends C8 {
         <header class="cb__header">
           <label>
             <span data-hidden data-ref="searchLabel"></span>
-            <input data-ref="search" data-on:input="onSearch" required />
+            <input
+              type="search"
+              data-ref="search"
+              data-on:input="onSearch"
+              required
+            />
           </label>
         </header>
 
