@@ -20,9 +20,9 @@
   },
   "scripts": {
     "dev": "node --run build:bundle -- --watch --servedir=.",
-    "test": "node --run test:build && node --test --experimental-strip-types",
+    "test": "node --test --experimental-strip-types",
     "test:build": "esbuild src/lib.js --bundle --target=es2023 --format=esm --outdir=dist --sourcemap",
-    "test:watch": "node --run test:build && node --test --experimental-strip-types --watch",
+    "test:watch": "node --test --experimental-strip-types --watch",
     "build": "node --run build:types && node --run build:bundle",
     "build:types": "tsc",
     "build:bundle": "esbuild src/lib.js src/lib.css --bundle --minify --target=es2023 --format=esm --outdir=dist --sourcemap",
