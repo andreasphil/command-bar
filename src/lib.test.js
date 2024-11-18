@@ -334,6 +334,21 @@ describe("CommandBar", () => {
       click($("button"));
       assert.equal(action.mock.callCount(), 1);
     });
+
+    test("repeats the same command", async () => {
+      const action = mock.fn();
+      const { el, $ } = render();
+
+      el.registerCommand({ id: "1", name: "1A", action });
+
+      el.open();
+      input($("input"), "a");
+      click($("button"));
+      assert.equal(action.mock.callCount(), 1);
+
+      keyboard(window, { metaKey: true, key: "." });
+      assert.equal(action.mock.callCount(), 2);
+    });
   });
 
   describe("searches and selects commands", () => {

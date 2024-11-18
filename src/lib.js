@@ -203,13 +203,18 @@ export class CommandBar extends C8 {
 
   /** @param {KeyboardEvent} event */
   #onGlobalKeydown(event) {
+    // Run if the command bar is closed
+    if (event.key === "." && event.metaKey) {
+      this.#runMostRecent();
+      event.preventDefault();
+    }
+
     if (!this.#open) return;
     let cancel = true;
 
+    // Run if the command bar is open
     if (event.key === "Escape") {
       this.#onEsc();
-    } else if (event.key === "." && event.metaKey) {
-      this.#runMostRecent();
     } else if (event.key === "ArrowUp") {
       this.#moveFocusUp();
     } else if (event.key === "ArrowDown") {
@@ -270,7 +275,6 @@ export class CommandBar extends C8 {
     } else {
       this.ref("host").close();
       this.#setFocusedResult(0);
-      this.#mostRecent = null;
       this.#open = false;
       this.#setQuery("");
     }
@@ -489,7 +493,9 @@ export class CommandBar extends C8 {
   }
 
   #runMostRecent() {
-    if (this.#mostRecent) this.#runCommand(this.#mostRecent);
+    if (this.#mostRecent && this.attrs.allowRepeat) {
+      this.#runCommand(this.#mostRecent);
+    }
   }
 
   /** @param {Command} command */
