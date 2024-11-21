@@ -32,11 +32,11 @@ npm i github:andreasphil/command-bar#<tag>
 Import the styling for the command bar in your app:
 
 ```ts
-import "@andreasphil/design-system/style.css" layer(theme);
-import "@andreasphil/command-bar/style.css";
+@import "@andreasphil/design-system/style.css" layer(theme);
+@import "@andreasphil/command-bar/style.css";
 ```
 
-Import the component and define it:
+Then import the component and `define` it:
 
 ```ts
 import { CommandBar } from "@andreasphil/command-bar";
@@ -44,7 +44,7 @@ import { CommandBar } from "@andreasphil/command-bar";
 CommandBar.define();
 ```
 
-After that, the component will be available to use in HTML:
+After that, the component will be available in the HTML:
 
 ```html
 <command-bar></command-bar>
