@@ -1,4 +1,4 @@
-import { C8, html } from "@andreasphil/c8";
+import { C8, html, renderTemplate } from "@andreasphil/c8";
 
 /* -------------------------------------------------- *
  * Types                                              *
@@ -86,6 +86,17 @@ const frown =
  */
 export function renderSvgFromString(svg) {
   return new DOMParser().parseFromString(svg, "image/svg+xml").documentElement;
+}
+
+/**
+ * @param {Record<string, any>} classNames
+ * @returns {string}
+ */
+function cls(classNames) {
+  return Object.entries(classNames)
+    .filter(([k, v]) => Boolean(v))
+    .map(([k]) => k)
+    .join(" ");
 }
 
 /* -------------------------------------------------- *
@@ -319,46 +330,29 @@ export class CommandBar extends C8 {
    * @param {{ focused: boolean, chordMatch: boolean }} state
    */
   #renderCommand(command, state) {
-    const itemClass = [
-      "cb__result",
-      state.focused && "cb__result--focused",
-      state.chordMatch && "cb__result--chord-match",
-    ];
+    const itemClass = cls({
+      cb__result: true,
+      "cb__result--focused": state.focused,
+      "cb__result--chord-match": state.chordMatch,
+    });
 
-    const host = document.createElement("li");
+    const template = html`<li>
+      <button class="${itemClass}">
+        <span>${command.icon ? command.icon : ""}</span
+        ><span class="cb__group-name">${command.groupName ?? ""}</span
+        ><span data-clamp="1">${command.name}</span
+        ><span class="cb__chord">${command.chord ?? ""}</span>
+      </button>
+    </li>`.replace(/(\n|\s{2,})/g, ""); // Cleanup whitespace for tests
 
-    const button = document.createElement("button");
-    button.classList.add(...itemClass.filter((i) => !!i));
-    button.addEventListener("click", () => this.#runCommand(command));
+    /** @type {HTMLElement} */
+    // @ts-expect-error
+    const host = renderTemplate(template);
 
-    if (command.icon) button.append(command.icon);
+    host
+      .querySelector("button")
+      .addEventListener("click", () => this.#runCommand(command));
 
-    if (command.groupName) {
-      const groupName = document.createElement("span");
-      groupName.classList.add("cb__group-name");
-      groupName.textContent = command.groupName;
-      button.appendChild(groupName);
-
-      const groupCaret = document.createElement("span");
-      groupCaret.classList.add("cb__group-name");
-      groupCaret.textContent = "›";
-      button.appendChild(groupCaret);
-    }
-
-    const title = document.createElement("span");
-    title.dataset.clamp = "";
-    title.title = command.name;
-    title.textContent = command.name;
-    button.appendChild(title);
-
-    if (command.chord) {
-      const chord = document.createElement("span");
-      chord.classList.add("cb__chord");
-      chord.textContent = command.chord;
-      button.appendChild(chord);
-    }
-
-    host.appendChild(button);
     return host;
   }
 

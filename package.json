@@ -29,7 +29,7 @@
     "preversion": "node --run test && node --run build; git add dist/"
   },
   "dependencies": {
-    "@andreasphil/c8": "github:andreasphil/c8#v0.3.0",
+    "@andreasphil/c8": "github:andreasphil/c8#v0.4.0",
     "@andreasphil/design-system": "github:andreasphil/design-system#v0.37.0"
   },
   "devDependencies": {
@@ -37,5 +37,5 @@
     "jsdom": "^25.0.1",
     "typescript": "^5.6.3"
   },
-  "packageManager": "pnpm@9.13.2"
+  "packageManager": "pnpm@9.14.2"
 }

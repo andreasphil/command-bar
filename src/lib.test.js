@@ -82,7 +82,7 @@ describe("CommandBar", () => {
   });
 
   afterEach(() => {
-    window.document.querySelector("body").innerHTML = "";
+    window.document.body.innerHTML = "";
   });
 
   test("renders", () => {
@@ -278,7 +278,7 @@ describe("CommandBar", () => {
       });
 
       el.open("a");
-      assert.equal($("button").textContent, "Group›1A");
+      assert.equal($("button").textContent, "Group1A");
     });
 
     test("shows the icon", async () => {
@@ -573,7 +573,7 @@ describe("CommandBar", () => {
 
       el.open();
       input($("input"), "GX");
-      assert.equal($("button").textContent, "GX›1A");
+      assert.equal($("button").textContent, "GX1A");
     });
 
     test("finds commands by alias", async () => {
