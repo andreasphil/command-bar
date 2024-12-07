@@ -6,8 +6,6 @@
   <strong>⌘K command bar web component</strong>
 </p>
 
-> ⚠️ Work in progress. Things are most certainly incomplete and/or broken, and will definitely change.
-
 - 🚀 Fast, efficient, keyboard driven UX
 - 🍦 Vanilla JS, native web component that works everywhere
 - 😌 Opinionated: it doesn't do much, but what it does is very easy to use
