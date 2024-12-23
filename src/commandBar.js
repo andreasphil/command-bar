@@ -338,7 +338,7 @@ export class CommandBar extends C8 {
 
     const template = html`<li>
       <button class="${itemClass}">
-        <span>${command.icon ? command.icon : ""}</span
+        <span class="cb__icon"></span
         ><span class="cb__group-name">${command.groupName ?? ""}</span
         ><span data-clamp="1">${command.name}</span
         ><span class="cb__chord">${command.chord ?? ""}</span>
@@ -348,6 +348,13 @@ export class CommandBar extends C8 {
     /** @type {HTMLElement} */
     // @ts-expect-error
     const host = renderTemplate(template);
+
+    // Insert icon manually as it might also be an HTML element
+    if (command.icon instanceof Element) {
+      host.querySelector(".cb__icon").appendChild(command.icon);
+    } else if (typeof command.icon === "string") {
+      host.querySelector(".cb__icon").textContent = command.icon;
+    }
 
     host
       .querySelector("button")

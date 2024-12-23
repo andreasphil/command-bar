@@ -63,6 +63,7 @@ describe("CommandBar", () => {
     globalThis.addEventListener = dom.window.addEventListener;
     globalThis.customElements = dom.window.customElements;
     globalThis.document = dom.window.document;
+    globalThis.Element = dom.window.Element;
     globalThis.Event = dom.window.Event;
     globalThis.HTMLDialogElement = dom.window.HTMLDialogElement;
     globalThis.HTMLElement = dom.window.HTMLElement;
@@ -75,7 +76,9 @@ describe("CommandBar", () => {
     globalThis.HTMLDialogElement.prototype.showModal = mock.fn();
     globalThis.HTMLDialogElement.prototype.close = mock.fn();
 
-    const { CommandBar: CommandBarAsyncImport } = await import("./commandBar.js");
+    const { CommandBar: CommandBarAsyncImport } = await import(
+      "./commandBar.js"
+    );
 
     CommandBar = CommandBarAsyncImport;
     CommandBar.define();
@@ -281,7 +284,7 @@ describe("CommandBar", () => {
       assert.equal($("button").textContent, "Group1A");
     });
 
-    test("shows the icon", async () => {
+    test("shows a string icon", async () => {
       const { el, $ } = render();
 
       el.registerCommand({
@@ -293,6 +296,23 @@ describe("CommandBar", () => {
 
       el.open("a");
       assert.equal($("button").textContent, "😎1A");
+    });
+
+    test("shows a HTML element icon", async () => {
+      const { el, $ } = render();
+
+      const icon = document.createElement("span");
+      icon.textContent = "Foo"
+
+      el.registerCommand({
+        id: "1",
+        name: "1A",
+        icon,
+        action: mock.fn(),
+      });
+
+      el.open("a");
+      assert.equal($("button").textContent, "Foo1A");
     });
 
     test("shows the chord", async () => {
