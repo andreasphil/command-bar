@@ -9,11 +9,11 @@ importers:
   .:
     dependencies:
       '@andreasphil/c8':
-        specifier: github:andreasphil/c8#v0.4.0
-        version: https://codeload.github.com/andreasphil/c8/tar.gz/fbd66c4ff6e14a1d45a543feeefd96d8ad345ae0
+        specifier: github:andreasphil/c8#v0.5.0
+        version: https://codeload.github.com/andreasphil/c8/tar.gz/cddbb4bd7abebeb633dd99df13ed5160b1a911de
       '@andreasphil/design-system':
-        specifier: github:andreasphil/design-system#v0.37.0
-        version: https://codeload.github.com/andreasphil/design-system/tar.gz/77bf154a40e9ce99dcf931142c1d9f8a5718373a
+        specifier: github:andreasphil/design-system#v0.40.0
+        version: https://codeload.github.com/andreasphil/design-system/tar.gz/daca1147bad38d9b4f96908664c5ab4ab4757094
     devDependencies:
       esbuild:
         specifier: ^0.24.0
@@ -27,13 +27,13 @@ importers:
 
 packages:
 
-  '@andreasphil/c8@https://codeload.github.com/andreasphil/c8/tar.gz/fbd66c4ff6e14a1d45a543feeefd96d8ad345ae0':
-    resolution: {tarball: https://codeload.github.com/andreasphil/c8/tar.gz/fbd66c4ff6e14a1d45a543feeefd96d8ad345ae0}
-    version: 0.4.0
+  '@andreasphil/c8@https://codeload.github.com/andreasphil/c8/tar.gz/cddbb4bd7abebeb633dd99df13ed5160b1a911de':
+    resolution: {tarball: https://codeload.github.com/andreasphil/c8/tar.gz/cddbb4bd7abebeb633dd99df13ed5160b1a911de}
+    version: 0.5.0
 
-  '@andreasphil/design-system@https://codeload.github.com/andreasphil/design-system/tar.gz/77bf154a40e9ce99dcf931142c1d9f8a5718373a':
-    resolution: {tarball: https://codeload.github.com/andreasphil/design-system/tar.gz/77bf154a40e9ce99dcf931142c1d9f8a5718373a}
-    version: 0.37.0
+  '@andreasphil/design-system@https://codeload.github.com/andreasphil/design-system/tar.gz/daca1147bad38d9b4f96908664c5ab4ab4757094':
+    resolution: {tarball: https://codeload.github.com/andreasphil/design-system/tar.gz/daca1147bad38d9b4f96908664c5ab4ab4757094}
+    version: 0.40.0
 
   '@esbuild/aix-ppc64@0.24.0':
     resolution: {integrity: sha512-WtKdFM7ls47zkKHFVzMz8opM7LkcsIp9amDUBIAWirg70RM71WRSjdILPsY5Uv1D42ZpUfaPILDlfactHgsRkw==}
@@ -350,9 +350,9 @@ packages:
 
 snapshots:
 
-  '@andreasphil/c8@https://codeload.github.com/andreasphil/c8/tar.gz/fbd66c4ff6e14a1d45a543feeefd96d8ad345ae0': {}
+  '@andreasphil/c8@https://codeload.github.com/andreasphil/c8/tar.gz/cddbb4bd7abebeb633dd99df13ed5160b1a911de': {}
 
-  '@andreasphil/design-system@https://codeload.github.com/andreasphil/design-system/tar.gz/77bf154a40e9ce99dcf931142c1d9f8a5718373a': {}
+  '@andreasphil/design-system@https://codeload.github.com/andreasphil/design-system/tar.gz/daca1147bad38d9b4f96908664c5ab4ab4757094': {}
 
   '@esbuild/aix-ppc64@0.24.0':
     optional: true
