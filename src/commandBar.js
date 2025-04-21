@@ -1,8 +1,6 @@
 import { C8, html, renderTemplate } from "@andreasphil/c8";
 
-/* -------------------------------------------------- *
- * Types                                              *
- * -------------------------------------------------- */
+// Types --------------------------------------------------
 
 /**
  * @typedef {Partial<Pick<KeyboardEvent, "key" | "metaKey" | "altKey" | "ctrlKey" | "shiftKey">>} KeyboardShortcut
@@ -65,9 +63,7 @@ import { C8, html, renderTemplate } from "@andreasphil/c8";
  * @property {HTMLParagraphElement} emptyMessage
  */
 
-/* -------------------------------------------------- *
- * Utils                                              *
- * -------------------------------------------------- */
+// Utils --------------------------------------------------
 
 // From https://lucide.dev, licensed under the ISC License.
 //
@@ -99,9 +95,7 @@ function cls(classNames) {
     .join(" ");
 }
 
-/* -------------------------------------------------- *
- * Functionality                                      *
- * -------------------------------------------------- */
+// Functionality ------------------------------------------
 
 /** @extends {C8<CommandBarAttrs, CommandBarRefs, never>} */
 export class CommandBar extends C8 {
@@ -172,9 +166,7 @@ export class CommandBar extends C8 {
     }
   }
 
-  /* -------------------------------------------------- *
-   * Lifecycle                                          *
-   * -------------------------------------------------- */
+  // Lifecycle ----------------------------------------------
 
   #disconnectedController = new AbortController();
 
@@ -239,9 +231,7 @@ export class CommandBar extends C8 {
     if (cancel) event.preventDefault();
   }
 
-  /* -------------------------------------------------- *
-   * State                                              *
-   * -------------------------------------------------- */
+  // State --------------------------------------------------
 
   #open = false;
 
@@ -291,9 +281,7 @@ export class CommandBar extends C8 {
     }
   }
 
-  /* -------------------------------------------------- *
-   * Rendering                                          *
-   * -------------------------------------------------- */
+  // Rendering ----------------------------------------------
 
   /**
    * @private Cannot be strictly private for Vue compat reasons, but should be
@@ -316,56 +304,45 @@ export class CommandBar extends C8 {
     this.ref("results").innerHTML = "";
 
     this.#getFilteredCommands().forEach((command, i) => {
-      const el = this.#renderCommand(command, {
-        focused: i === this.#focusedResult,
-        chordMatch: this.#query === command.chord,
+      const li = document.createElement("li");
+
+      const button = document.createElement("button");
+      button.addEventListener("click", () => this.#runCommand(command));
+      button.className = cls({
+        cb__result: true,
+        "cb__result--focused": i === this.#focusedResult,
+        "cb__result--chord-match": this.#query === command.chord,
       });
 
-      this.ref("results").appendChild(el);
+      const icon = document.createElement("span");
+      icon.classList.add("cb__icon");
+      if (command.icon instanceof Element) icon.appendChild(command.icon);
+      else if (typeof command.icon === "string")
+        icon.textContent = command.icon;
+      button.appendChild(icon);
+
+      const groupName = document.createElement("span");
+      groupName.classList.add("cb__group-name");
+      groupName.textContent = command.groupName ?? "";
+      button.appendChild(groupName);
+
+      const commandName = document.createElement("span");
+      commandName.dataset.clamp = "1";
+      commandName.textContent = command.name;
+      button.appendChild(commandName);
+
+      const chord = document.createElement("span");
+      chord.classList.add("cb__chord");
+      chord.textContent = command.chord ?? "";
+      button.appendChild(chord);
+
+      li.appendChild(button);
+
+      this.ref("results").appendChild(li);
     });
   }
 
-  /**
-   * @param {Command} command
-   * @param {{ focused: boolean, chordMatch: boolean }} state
-   */
-  #renderCommand(command, state) {
-    const itemClass = cls({
-      cb__result: true,
-      "cb__result--focused": state.focused,
-      "cb__result--chord-match": state.chordMatch,
-    });
-
-    const template = html`<li>
-      <button class="${itemClass}">
-        <span class="cb__icon"></span
-        ><span class="cb__group-name">${command.groupName ?? ""}</span
-        ><span data-clamp="1">${command.name}</span
-        ><span class="cb__chord">${command.chord ?? ""}</span>
-      </button>
-    </li>`.replace(/(\n|\s{2,})/g, ""); // Cleanup whitespace for tests
-
-    /** @type {HTMLElement} */
-    // @ts-expect-error
-    const host = renderTemplate(template);
-
-    // Insert icon manually as it might also be an HTML element
-    if (command.icon instanceof Element) {
-      host.querySelector(".cb__icon").appendChild(command.icon);
-    } else if (typeof command.icon === "string") {
-      host.querySelector(".cb__icon").textContent = command.icon;
-    }
-
-    host
-      .querySelector("button")
-      .addEventListener("click", () => this.#runCommand(command));
-
-    return host;
-  }
-
-  /* -------------------------------------------------- *
-   * Visibility                                         *
-   * -------------------------------------------------- */
+  // Visibility ---------------------------------------------
 
   open(initialQuery = "") {
     this.#toggle(true);
@@ -406,9 +383,7 @@ export class CommandBar extends C8 {
     event.stopPropagation();
   }
 
-  /* -------------------------------------------------- *
-   * Command registration                               *
-   * -------------------------------------------------- */
+  // Command registration -----------------------------------
 
   /**
    * @param {Command[]} toRegister
@@ -441,9 +416,7 @@ export class CommandBar extends C8 {
     }
   }
 
-  /* -------------------------------------------------- *
-   * Searching and running                              *
-   * -------------------------------------------------- */
+  // Searching and running ----------------------------------
 
   /** @param {InputEvent} event */
   onSearch(event) {
