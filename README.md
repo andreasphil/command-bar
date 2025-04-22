@@ -71,6 +71,10 @@ See [commandBar.d.ts](./dist/commandBar.d.ts) for all available methods and docs
 
 ## Development
 
+> [!WARNING]
+>
+> (Some) spaghetti code ahead 🍝 I haven't really figured out a sensible way of managing state and rendering updates in vanilla web components yet. Let me know if you found one!
+
 This library is built with [esbuild](https://esbuild.github.io). Packages are managed by [npm](https://npmjs.org). Tests are powered by [Node.js' test runner](https://nodejs.org/en/learn/test-runner/introduction). The following commands are available:
 
 ```sh
