@@ -15,13 +15,13 @@
       "types": "./dist/commandBar.d.ts"
     },
     "./style.css": {
-      "import": "./dist/commandBar.css"
+      "import": "./dist/commandBar.css",
+      "default": "./dist/commandBar.css"
     }
   },
   "scripts": {
     "dev": "node --run build:bundle -- --watch --servedir=.",
     "test": "node --test --experimental-strip-types",
-    "test:build": "esbuild src/commandBar.js --bundle --target=es2023 --format=esm --outdir=dist --sourcemap",
     "test:watch": "node --test --experimental-strip-types --watch",
     "build": "node --run build:types && node --run build:bundle",
     "build:types": "tsc",
