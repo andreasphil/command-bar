@@ -33,11 +33,10 @@
  * -------------------------------------------------- */
 
 .cb__result {
-  --\$button-outline-offset: var(--outline-inset);
-
   background: transparent;
   color: var(--c-fg);
   justify-content: start;
+  outline-offset: var(--outline-inset);
   padding: 0.375rem 0.5rem;
   text-align: left;
   width: 100%;
