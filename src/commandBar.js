@@ -131,7 +131,7 @@ export class CommandBar extends C8 {
       <dialog class="cb__dialog" data-ref="host" data-on:close="onDialogClose">
         <header class="cb__header">
           <label>
-            <span data-hidden data-ref="searchLabel"></span>
+            <span class="visually-hidden" data-ref="searchLabel"></span>
             <input
               type="search"
               data-ref="search"
@@ -141,10 +141,10 @@ export class CommandBar extends C8 {
           </label>
         </header>
 
-        <div class="cb__body" data-with-fallback>
+        <div class="cb__body" has-fallback>
           <ul class="cb__results-list" data-ref="results"></ul>
 
-          <div data-when="empty">
+          <div fallback-for="empty">
             <p>${frown}</p>
             <p data-ref="emptyMessage"></p>
           </div>
@@ -369,7 +369,7 @@ export class CommandBar extends C8 {
         shiftKey: false,
         key: "",
       },
-      this.attrs.hotkey
+      this.attrs.hotkey,
     );
 
     let match = Object.entries(strictHotkey).reduce((match, [key, value]) => {
