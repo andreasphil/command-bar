@@ -327,7 +327,7 @@ export class CommandBar extends C8 {
       button.appendChild(groupName);
 
       const commandName = document.createElement("span");
-      commandName.dataset.clamp = "1";
+      commandName.classList.add("clamp");
       commandName.textContent = command.name;
       button.appendChild(commandName);
 

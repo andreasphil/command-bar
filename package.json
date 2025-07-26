@@ -30,7 +30,7 @@
   },
   "dependencies": {
     "@andreasphil/c8": "github:andreasphil/c8#v0.5.0",
-    "@andreasphil/design-system": "github:andreasphil/design-system#v0.51.0"
+    "@andreasphil/design-system": "github:andreasphil/design-system#v0.52.0"
   },
   "devDependencies": {
     "esbuild": "^0.25.6",
