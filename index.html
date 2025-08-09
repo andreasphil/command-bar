@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -7,8 +7,6 @@
     <style>
       @import url("node_modules/@andreasphil/design-system/dist/design-system.min.css")
       layer(theme);
-
-      @import url("./dist/commandBar.css");
 
       #app {
         text-align: center;
@@ -233,11 +231,11 @@
           setAnimal("");
           setColor("");
         },
-      }
+      },
     );
 
     new EventSource("/esbuild").addEventListener("change", () =>
-      location.reload()
+      location.reload(),
     );
   </script>
 </html>
