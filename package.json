@@ -17,12 +17,13 @@
   },
   "scripts": {
     "dev": "node --run build:bundle -- --watch --servedir=.",
-    "test": "node --test --experimental-strip-types",
-    "test:watch": "node --test --experimental-strip-types --watch",
+    "test": "node --test",
+    "test:watch": "node --test --watch",
     "build": "node --run build:types && node --run build:bundle",
     "build:types": "tsc",
-    "build:bundle": "esbuild src/commandBar.js --bundle --minify --target=es2023 --format=esm --outdir=dist --sourcemap",
-    "preversion": "node --run test && node --run build; git add dist/"
+    "build:bundle": "esbuild src/commandBar.js --bundle --format=esm --outdir=dist",
+    "preversion": "node --run test && node --run build; git add dist/",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@andreasphil/c8": "github:andreasphil/c8#v0.5.0",
