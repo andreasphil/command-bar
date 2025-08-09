@@ -1,4 +1,4 @@
-import { C8, html, renderTemplate } from "@andreasphil/c8";
+import { C8, html } from "@andreasphil/c8";
 
 // Types --------------------------------------------------
 
@@ -90,7 +90,7 @@ export function renderSvgFromString(svg) {
  */
 function cls(classNames) {
   return Object.entries(classNames)
-    .filter(([k, v]) => Boolean(v))
+    .filter(([, v]) => Boolean(v))
     .map(([k]) => k)
     .join(" ");
 }
