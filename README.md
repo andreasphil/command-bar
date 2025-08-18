@@ -66,7 +66,7 @@ cleanup = CommandBar.instance.registerCommand({
 
 ### API
 
-See [commandBar.d.ts](./dist/commandBar.d.ts) for all available methods and docs.
+See [mod.d.ts](./mod.d.ts) for all available methods and docs.
 
 ## Development
 

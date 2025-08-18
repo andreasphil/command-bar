@@ -1,4 +1,4 @@
-import { C8, html } from "@andreasphil/c8";
+import { C8, html } from "./c8.js";
 
 // Types --------------------------------------------------
 
@@ -462,7 +462,7 @@ export class CommandBar extends C8 {
         shiftKey: false,
         key: "",
       },
-      this.attrs.hotkey,
+      this.attrs.hotkey
     );
 
     let match = Object.entries(strictHotkey).reduce((match, [key, value]) => {

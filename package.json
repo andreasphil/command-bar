@@ -6,27 +6,21 @@
   "license": "MIT",
   "type": "module",
   "repository": "https://github.com/andreasphil/command-bar",
-  "files": [
-    "dist"
-  ],
   "exports": {
     ".": {
-      "import": "./dist/commandBar.js",
-      "types": "./dist/commandBar.d.ts"
+      "import": "./mod.js",
+      "types": "./mod.d.ts"
     }
   },
   "scripts": {
-    "dev": "node --run build:bundle -- --watch --servedir=.",
     "test": "node --test",
     "test:watch": "node --test --watch",
-    "build": "node --run build:types && node --run build:bundle",
+    "build": "node --run build:types",
     "build:types": "tsc",
-    "build:bundle": "esbuild src/commandBar.js --bundle --format=esm --outdir=dist",
-    "preversion": "node --run test && node --run build; git add dist/",
+    "preversion": "node --run test && node --run build && git add ./*.d.ts",
     "typecheck": "tsc --noEmit"
   },
-  "dependencies": {
-    "@andreasphil/c8": "github:andreasphil/c8#v0.5.0",
+  "peerDependencies": {
     "@andreasphil/design-system": "github:andreasphil/design-system#v0.52.0"
   },
   "devDependencies": {

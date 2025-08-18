@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -24,7 +24,7 @@
   </body>
 
   <script type="module">
-    import { CommandBar } from "./dist/commandBar.js";
+    import { CommandBar } from "./mod.js";
 
     CommandBar.define();
 
@@ -231,11 +231,7 @@
           setAnimal("");
           setColor("");
         },
-      },
-    );
-
-    new EventSource("/esbuild").addEventListener("change", () =>
-      location.reload(),
+      }
     );
   </script>
 </html>

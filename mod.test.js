@@ -7,7 +7,7 @@ describe("CommandBar", () => {
   /** @type {import("jsdom").DOMWindow} */
   let window;
 
-  /** @type {typeof import("./commandBar.js").CommandBar} */
+  /** @type {typeof import("./mod.js").CommandBar} */
   let CommandBar;
 
   function render(html = "<command-bar></command-bar>") {
@@ -30,7 +30,7 @@ describe("CommandBar", () => {
 
   /**
    * @param {HTMLElement | import("jsdom").DOMWindow | null} el
-   * @param {import("./commandBar.js").KeyboardShortcut} key
+   * @param {import("./mod.js").KeyboardShortcut} key
    */
   function keyboard(el, key) {
     if (!el) throw new Error("[keyboard] Target does not exist");
@@ -76,9 +76,7 @@ describe("CommandBar", () => {
     globalThis.HTMLDialogElement.prototype.showModal = mock.fn();
     globalThis.HTMLDialogElement.prototype.close = mock.fn();
 
-    const { CommandBar: CommandBarAsyncImport } = await import(
-      "./commandBar.js"
-    );
+    const { CommandBar: CommandBarAsyncImport } = await import("./mod.js");
 
     CommandBar = CommandBarAsyncImport;
     CommandBar.define();
@@ -302,7 +300,7 @@ describe("CommandBar", () => {
       const { el, $ } = render();
 
       const icon = document.createElement("span");
-      icon.textContent = "Foo"
+      icon.textContent = "Foo";
 
       el.registerCommand({
         id: "1",
