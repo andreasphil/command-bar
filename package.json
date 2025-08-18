@@ -30,8 +30,8 @@
     "@andreasphil/design-system": "github:andreasphil/design-system#v0.52.0"
   },
   "devDependencies": {
-    "esbuild": "^0.25.6",
+    "esbuild": "^0.25.9",
     "jsdom": "^26.1.0",
-    "typescript": "^5.8.3"
+    "typescript": "^5.9.2"
   }
 }
