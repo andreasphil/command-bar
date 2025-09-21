@@ -147,13 +147,13 @@ export class CommandBar extends C8 {
               overflow: auto;
 
               > * {
-                margin-top: 0.625rem;
+                margin-top: 0.75rem;
               }
             }
 
             .cb__results-list {
               list-style-type: none;
-              margin: 0.625rem 0 0 0;
+              margin: 0.75rem 0 0 0;
               padding: 0;
             }
 
@@ -162,7 +162,6 @@ export class CommandBar extends C8 {
               color: var(--c-fg);
               justify-content: start;
               outline-offset: var(--outline-inset);
-              padding: 0.375rem 0.5rem;
               text-align: left;
               width: 100%;
 
