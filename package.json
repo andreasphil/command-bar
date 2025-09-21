@@ -21,7 +21,7 @@
     "typecheck": "tsc --noEmit"
   },
   "peerDependencies": {
-    "@andreasphil/design-system": "github:andreasphil/design-system#v0.52.0"
+    "@andreasphil/design-system": "github:andreasphil/design-system#v0.53.0"
   },
   "devDependencies": {
     "esbuild": "^0.25.9",
