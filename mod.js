@@ -174,11 +174,14 @@ export class CommandBar extends C8 {
               }
 
               &.cb__result--chord-match {
-                background: var(--primary-50);
+                background: light-dark(var(--primary-50), var(--primary-100));
                 color: var(--primary-500);
 
                 &:hover {
-                  background: var(--primary-100);
+                  background: light-dark(
+                    var(--primary-100),
+                    var(--primary-200)
+                  );
                 }
 
                 .cb__group-name {
