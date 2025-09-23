@@ -132,6 +132,8 @@ export class CommandBar extends C8 {
         <style>
           @scope {
             :scope {
+              --internal-padding: 1rem;
+
               &:has(input:invalid) .cb__body {
                 display: none;
               }
