@@ -1,10 +1,8 @@
-import { C8, html } from "./c8.js";
+import { html, render } from "lit-html";
+import { classMap } from "lit-html/directives/class-map.js";
+import { computed, effect, map } from "nanostores";
 
 // Types --------------------------------------------------
-
-/**
- * @typedef {Partial<Pick<KeyboardEvent, "key" | "metaKey" | "altKey" | "ctrlKey" | "shiftKey">>} KeyboardShortcut
- */
 
 /**
  * @typedef Command
@@ -34,44 +32,10 @@ import { C8, html } from "./c8.js";
  */
 
 /**
- * @typedef CommandBarAttrs
- *
- * @property {boolean} allowRepeat When true, repeats the most recent command
- *  when ⌘. is pressed.
- *
- * @property {string} [emptyMessage] Changes the text of the message that is
- *  displayed when no results are found. Defaults to "Sorry, couldnʼt find
- *  anything."
- *
- * @property {KeyboardShortcut} [hotkey] Allows you to set a custom hotkey.
- *  Defaults to ⌘K.
- *
- * @property {number} [limitResults] Limits the number of results that are
- *  shown. Defaults to 10.
- *
- * @property {string} [placeholder] Changes the placeholder of the search field.
- *  Defaults to "Search..."
- */
-
-/**
- * @typedef CommandBarRefs
- *
- * @property {HTMLDialogElement} host
- * @property {HTMLLabelElement} searchLabel
- * @property {HTMLInputElement} search
- * @property {HTMLUListElement} results
- * @property {HTMLParagraphElement} emptyMessage
+ * @typedef {Partial<Pick<KeyboardEvent, "key" | "metaKey" | "altKey" | "ctrlKey" | "shiftKey">>} KeyboardShortcut
  */
 
 // Utils --------------------------------------------------
-
-// From https://lucide.dev, licensed under the ISC License.
-//
-// Copyright (c) for portions of Lucide are held by Cole Bemis 2013-2022 as
-// part of Feather (MIT). All other copyright (c) for Lucide are held by
-// Lucide Contributors 2022.
-const frown =
-  '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-frown"><circle cx="12" cy="12" r="10"/><path d="M16 16s-1.5-2-4-2-4 2-4 2"/><line x1="9" x2="9.01" y1="9" y2="9"/><line x1="15" x2="15.01" y1="9" y2="9"/></svg>';
 
 /**
  * Takes an SVG string and converts it into an HTML element. Useful for
@@ -84,170 +48,14 @@ export function renderSvgFromString(svg) {
   return new DOMParser().parseFromString(svg, "image/svg+xml").documentElement;
 }
 
-/**
- * @param {Record<string, any>} classNames
- * @returns {string}
- */
-function cls(classNames) {
-  return Object.entries(classNames)
-    .filter(([, v]) => Boolean(v))
-    .map(([k]) => k)
-    .join(" ");
-}
+// Main ---------------------------------------------------
 
-// Functionality ------------------------------------------
-
-/** @extends {C8<CommandBarAttrs, CommandBarRefs, never>} */
-export class CommandBar extends C8 {
+export class CommandBar extends HTMLElement {
   static tag = "command-bar";
 
-  static disabledFeatures = ["shadow"];
-
-  /** @type {import("@andreasphil/c8").Attrs<CommandBarAttrs>} */
-  static attrs = {
-    allowRepeat: { parse: Boolean, default: () => "true" },
-
-    emptyMessage: {
-      parse: String,
-      default: () => "Sorry, couldnʼt find anything.",
-    },
-
-    limitResults: { parse: Number, default: () => "10" },
-
-    placeholder: { parse: String, default: () => "Search..." },
-
-    hotkey: {
-      parse: JSON.parse,
-      stringify: JSON.stringify,
-      default: () => '{"key":"k","metaKey":true}',
-    },
-  };
-
-  /** @type {Array<keyof HTMLElementEventMap>} */
-  static events = ["close", "input", "click"];
-
-  get template() {
-    return html`
-      <dialog data-ref="host" data-on:close="onDialogClose">
-        <style>
-          @scope {
-            :scope {
-              --internal-padding: 1rem;
-
-              &:has(input:invalid) .cb__body {
-                display: none;
-              }
-            }
-
-            .cb__header {
-              font-weight: normal;
-              margin: 0;
-            }
-
-            .cb__body {
-              max-height: calc(80dvh - 12rem);
-              overflow: auto;
-
-              > * {
-                margin-top: 0.75rem;
-              }
-            }
-
-            .cb__results-list {
-              list-style-type: none;
-              margin: 0.75rem 0 0 0;
-              padding: 0;
-            }
-
-            .cb__result {
-              background: transparent;
-              color: var(--c-fg);
-              justify-content: start;
-              outline-offset: var(--outline-inset);
-              text-align: left;
-              width: 100%;
-
-              &:hover {
-                background: var(--c-surface-variant-bg);
-              }
-
-              &.cb__result--focused {
-                background: var(--c-surface-variant-bg);
-              }
-
-              &.cb__result--chord-match {
-                background: light-dark(var(--primary-50), var(--primary-100));
-                color: var(--primary-500);
-
-                &:hover {
-                  background: light-dark(
-                    var(--primary-100),
-                    var(--primary-200)
-                  );
-                }
-
-                .cb__group-name {
-                  color: var(--primary-400);
-                }
-
-                .cb__chord {
-                  border-color: var(--primary-200);
-                  color: var(--primary-400);
-                }
-              }
-
-              > :empty {
-                display: none;
-              }
-            }
-
-            .cb__group-name {
-              color: var(--c-fg-variant);
-              display: inline-block;
-              flex: none;
-              font-weight: var(--font-weight-normal);
-
-              &:after {
-                content: "›";
-                margin-left: 0.75ch;
-              }
-            }
-
-            .cb__chord {
-              background: var(--c-surface-bg);
-              border-radius: var(--border-radius-small);
-              border: var(--border-width) solid var(--c-border);
-              color: var(--c-fg-variant);
-              font-family: var(--font-family-mono);
-              font-size: var(--font-size-mono);
-              margin-left: auto;
-              padding: 0 0.25rem;
-            }
-          }
-        </style>
-
-        <header class="cb__header">
-          <label>
-            <span class="visually-hidden" data-ref="searchLabel"></span>
-            <input
-              type="search"
-              data-ref="search"
-              data-on:input="onSearch"
-              required
-            />
-          </label>
-        </header>
-
-        <div class="cb__body" has-fallback>
-          <ul class="cb__results-list" data-ref="results"></ul>
-
-          <div fallback-for="empty">
-            <p>${frown}</p>
-            <p data-ref="emptyMessage"></p>
-          </div>
-        </div>
-      </dialog>
-    `;
+  static define(tag = this.tag) {
+    this.tag = tag;
+    customElements.define(tag, this);
   }
 
   static get instance() {
@@ -258,18 +66,111 @@ export class CommandBar extends C8 {
         console.warn("Found multiple CommandBars. Only the first is returned.");
       }
       return instance[0];
-    } else {
-      throw new Error("No CommandBar instance found.");
+    } else throw new Error("No CommandBar instance found.");
+  }
+
+  // State --------------------------------------------------
+
+  #state = map({
+    commands: [],
+    focusedResult: 0,
+    mostRecent: null,
+    open: false,
+    query: "",
+  });
+
+  /** @type {import("nanostores").Atom<Record<string, Command>>} */
+  #chords = computed(this.#state, (state) =>
+    state.commands.reduce((all, current) => {
+      if (current.chord) all[current.chord] = current;
+      return all;
+    }, {}),
+  );
+
+  /** @type {import("nanostores").ReadableAtom<Command[]>} */
+  #results = computed([this.#state, this.#chords], (state, chords) => {
+    if (!this.#state.get().query) return [];
+
+    const matchingChord = chords[state.query];
+    const queryTokens = state.query.toLowerCase().split(" ");
+
+    const results = state.commands
+      .filter((i) => {
+        // Do not include the same item twice if it's already included via chord
+        if (matchingChord && matchingChord.id === i.id) return false;
+
+        const commandStr = [i.name, ...(i.alias ?? []), i.groupName ?? ""]
+          .join(" ")
+          .toLowerCase();
+
+        return queryTokens.every((token) => commandStr.includes(token));
+      })
+      .slice(0, 10)
+      .sort((a, b) => (b.weight ?? 0) - (a.weight ?? 0));
+
+    if (matchingChord) results.unshift(matchingChord);
+
+    return results;
+  });
+
+  // Public API ---------------------------------------------
+
+  /** @type {KeyboardShortcut} */
+  shortcut = { key: "k", metaKey: true };
+
+  allowRepeat = true;
+
+  get placeholder() {
+    return this.getAttribute("placeholder") ?? "Search...";
+  }
+
+  get emptyMessage() {
+    return (
+      this.getAttribute("emptymessage") ?? "Sorry, couldnʼt find anything."
+    );
+  }
+
+  /** @param {Command[]} toRegister */
+  registerCommand(...toRegister) {
+    const ids = toRegister.map((c) => c.id);
+    this.removeCommand(...ids);
+
+    const next = this.#state.get().commands.concat(...toRegister);
+    this.#state.setKey("commands", next);
+
+    return () => {
+      this.removeCommand(...ids);
+    };
+  }
+
+  /** @param {string[]} toRemove */
+  removeCommand(...toRemove) {
+    const next = this.#state
+      .get()
+      .commands.filter((c) => !toRemove.includes(c.id));
+
+    this.#state.setKey("commands", next);
+
+    const mostRecent = this.#state.get().mostRecent;
+    if (mostRecent && toRemove.includes(mostRecent.id)) {
+      this.#state.setKey("mostRecent", null);
     }
+  }
+
+  open(initialQuery = "") {
+    this.#state.setKey("query", initialQuery);
+    this.#toggle(true);
   }
 
   // Lifecycle ----------------------------------------------
 
   #disconnectedController = new AbortController();
 
-  connectedCallback() {
-    super.connectedCallback();
+  constructor() {
+    super();
+  }
 
+  connectedCallback() {
     addEventListener("keydown", (e) => this.#onToggleShortcut(e), {
       signal: this.#disconnectedController.signal,
     });
@@ -278,27 +179,58 @@ export class CommandBar extends C8 {
       signal: this.#disconnectedController.signal,
     });
 
-    this.updatePlaceholder();
-    this.updateEmptyMessage();
+    effect([this.#state, this.#results], () => {
+      this.#render();
+    });
+
+    this.#render();
   }
 
   disconnectedCallback() {
     this.#disconnectedController.abort();
   }
 
-  /**
-   * @template {keyof CommandBarAttrs} T
-   * @param {T} name
-   */
-  attributeChangedCallback(name) {
-    switch (name.toLowerCase()) {
-      case "placeholder":
-        this.updatePlaceholder();
-        break;
-      case "emptymessage":
-        this.updateEmptyMessage();
-        break;
+  // Internal -----------------------------------------------
+
+  get #dialog() {
+    return this.querySelector("dialog");
+  }
+
+  #toggle(open = !this.#state.get().open) {
+    if (open === this.#state.get().open) return;
+    else if (open) {
+      this.#dialog.showModal();
+      this.#state.setKey("open", true);
+    } else {
+      this.#dialog.close();
+      this.#state.setKey("focusedResult", 0);
+      this.#state.setKey("open", false);
+      this.#state.setKey("query", "");
     }
+  }
+
+  /** @param {KeyboardEvent} event */
+  #onToggleShortcut(event) {
+    const strictShortcut = Object.assign(
+      {
+        altKey: false,
+        ctrlKey: false,
+        metaKey: false,
+        shiftKey: false,
+        key: "",
+      },
+      this.shortcut,
+    );
+
+    let match = Object.entries(strictShortcut).reduce((match, [key, value]) => {
+      return match && event[key] === value;
+    }, true);
+
+    if (!match) return;
+
+    this.#toggle();
+    event.preventDefault();
+    event.stopPropagation();
   }
 
   /** @param {KeyboardEvent} event */
@@ -309,7 +241,7 @@ export class CommandBar extends C8 {
       event.preventDefault();
     }
 
-    if (!this.#open) return;
+    if (!this.#state.get().open) return;
     let cancel = true;
 
     // Run if the command bar is open
@@ -328,251 +260,218 @@ export class CommandBar extends C8 {
     if (cancel) event.preventDefault();
   }
 
-  // State --------------------------------------------------
-
-  #open = false;
-
-  /** @type {Command[]} */
-  #commands = [];
-
-  /** @type {Map<string, Command>} */
-  #chords = new Map();
-
-  /** @type {Command | null} */
-  #mostRecent = null;
-
-  #query = "";
-
-  #focusedResult = 0;
-
-  /** @param {string} value */
-  #setQuery(value) {
-    this.#query = value;
-    this.#setFocusedResult(0);
-
-    this.ref("search").value = value;
-    this.#updateResults();
-  }
-
-  /** @param {number} value */
-  #setFocusedResult(value) {
-    this.#focusedResult = value;
-
-    const results = this.ref("results").querySelectorAll("button");
-    results.forEach((result, i) => {
-      if (i === value) result.classList.add("cb__result--focused");
-      else result.classList.remove("cb__result--focused");
-    });
-  }
-
-  #toggle(open = !this.#open) {
-    if (open === this.#open) return;
-    else if (open) {
-      this.ref("host").showModal();
-      this.#open = true;
-    } else {
-      this.ref("host").close();
-      this.#setFocusedResult(0);
-      this.#open = false;
-      this.#setQuery("");
-    }
-  }
-
-  // Rendering ----------------------------------------------
-
-  /**
-   * @private Cannot be strictly private for Vue compat reasons, but should be
-   *  treated as internal.
-   */
-  updatePlaceholder() {
-    this.ref("searchLabel").textContent = this.attrs.placeholder;
-    this.ref("search").setAttribute("placeholder", this.attrs.placeholder);
-  }
-
-  /**
-   * @private Cannot be strictly private for Vue compat reasons, but should be
-   *  treated as internal.
-   */
-  updateEmptyMessage() {
-    this.ref("emptyMessage").textContent = this.attrs.emptyMessage;
-  }
-
-  #updateResults() {
-    this.ref("results").innerHTML = "";
-
-    this.#getFilteredCommands().forEach((command, i) => {
-      const li = document.createElement("li");
-
-      const button = document.createElement("button");
-      button.addEventListener("click", () => this.#runCommand(command));
-      button.className = cls({
-        cb__result: true,
-        "cb__result--focused": i === this.#focusedResult,
-        "cb__result--chord-match": this.#query === command.chord,
-      });
-
-      const icon = document.createElement("span");
-      icon.classList.add("cb__icon");
-      if (command.icon instanceof Element) icon.appendChild(command.icon);
-      else if (typeof command.icon === "string")
-        icon.textContent = command.icon;
-      button.appendChild(icon);
-
-      const groupName = document.createElement("span");
-      groupName.classList.add("cb__group-name");
-      groupName.textContent = command.groupName ?? "";
-      button.appendChild(groupName);
-
-      const commandName = document.createElement("span");
-      commandName.classList.add("clamp");
-      commandName.textContent = command.name;
-      button.appendChild(commandName);
-
-      const chord = document.createElement("span");
-      chord.classList.add("cb__chord");
-      chord.textContent = command.chord ?? "";
-      button.appendChild(chord);
-
-      li.appendChild(button);
-
-      this.ref("results").appendChild(li);
-    });
-  }
-
-  // Visibility ---------------------------------------------
-
-  open(initialQuery = "") {
-    this.#toggle(true);
-    this.#setQuery(initialQuery);
-  }
-
-  onDialogClose() {
-    this.#open = false;
-  }
-
   #onEsc() {
-    if (this.#query) {
-      this.#setQuery("");
-    } else this.#toggle(false);
-  }
-
-  /** @param {KeyboardEvent} event */
-  #onToggleShortcut(event) {
-    const strictHotkey = Object.assign(
-      {
-        altKey: false,
-        ctrlKey: false,
-        metaKey: false,
-        shiftKey: false,
-        key: "",
-      },
-      this.attrs.hotkey
-    );
-
-    let match = Object.entries(strictHotkey).reduce((match, [key, value]) => {
-      return match && event[key] === value;
-    }, true);
-
-    if (!match) return;
-
-    this.#toggle();
-    event.preventDefault();
-    event.stopPropagation();
-  }
-
-  // Command registration -----------------------------------
-
-  /**
-   * @param {Command[]} toRegister
-   * @returns {() => void}
-   */
-  registerCommand(...toRegister) {
-    const ids = toRegister.map((c) => c.id);
-    this.removeCommand(...ids);
-    this.#commands = [...this.#commands, ...toRegister];
-
-    toRegister.forEach((command) => {
-      if (command.chord) this.#chords.set(command.chord, command);
-    });
-
-    return () => {
-      this.removeCommand(...ids);
-    };
-  }
-
-  /** @param {string[]} toRemove */
-  removeCommand(...toRemove) {
-    this.#commands = this.#commands.filter((c) => !toRemove.includes(c.id));
-
-    this.#chords.forEach((command, chord) => {
-      if (toRemove.includes(command.id)) this.#chords.delete(chord);
-    });
-
-    if (this.#mostRecent && toRemove.includes(this.#mostRecent.id)) {
-      this.#mostRecent = null;
-    }
-  }
-
-  // Searching and running ----------------------------------
-
-  /** @param {InputEvent} event */
-  onSearch(event) {
-    if (!(event.target instanceof HTMLInputElement)) return;
-    this.#setQuery(event.target.value);
-  }
-
-  #getFilteredCommands() {
-    if (!this.#query) return [];
-
-    const matchingChord = this.#chords.get(this.#query);
-    const queryTokens = this.#query.toLowerCase().split(" ");
-
-    const result = this.#commands
-      .filter((i) => {
-        // Do not include the same item twice if it's already included via chord
-        if (matchingChord && matchingChord.id === i.id) return false;
-
-        const commandStr = [i.name, ...(i.alias ?? []), i.groupName ?? ""]
-          .join(" ")
-          .toLowerCase();
-
-        return queryTokens.every((token) => commandStr.includes(token));
-      })
-      .slice(0, this.attrs.limitResults)
-      .sort((a, b) => (b.weight ?? 0) - (a.weight ?? 0));
-
-    if (matchingChord) result.unshift(matchingChord);
-
-    return result;
+    if (this.#state.get().query) this.#state.setKey("query", "");
+    else this.#toggle(false);
   }
 
   #moveFocusDown() {
-    const commandCount = this.#getFilteredCommands().length;
+    const commandCount = this.#results.get().length;
     if (commandCount === 0) return;
-
-    const next = this.#focusedResult + 1;
-    this.#setFocusedResult(Math.min(commandCount - 1, next));
+    const next = this.#state.get().focusedResult + 1;
+    this.#state.setKey("focusedResult", Math.min(commandCount - 1, next));
   }
 
   #moveFocusUp() {
-    this.#setFocusedResult(Math.max(this.#focusedResult - 1, 0));
+    const next = this.#state.get().focusedResult - 1;
+    this.#state.setKey("focusedResult", Math.max(next, 0));
   }
 
   #runFocusedCommand() {
-    const focused = this.#getFilteredCommands().at(this.#focusedResult);
+    const focused = this.#results.get().at(this.#state.get().focusedResult);
     if (focused) this.#runCommand(focused);
   }
 
   #runMostRecent() {
-    if (this.#mostRecent && this.attrs.allowRepeat) {
-      this.#runCommand(this.#mostRecent);
+    if (this.#state.get().mostRecent && this.allowRepeat) {
+      this.#runCommand(this.#state.get().mostRecent);
     }
   }
 
   /** @param {Command} command */
   #runCommand(command) {
     command.action();
-    this.#mostRecent = command;
+    this.#state.setKey("mostRecent", command);
     this.#toggle(false);
+  }
+
+  // Template -----------------------------------------------
+
+  /**
+   * @param {object} state
+   * @param {Command[]} state.results
+   * @param {number} state.focusedResult
+   * @param {string} state.emptyMessage
+   * @param {string} state.query
+   * @param {string} state.searchLabel
+   */
+  #template = (state) =>
+    html`<dialog>
+      <style>
+        @scope {
+          :scope {
+            --internal-padding: 1rem;
+
+            &:has(input:invalid) output {
+              display: none;
+            }
+          }
+
+          header {
+            font-weight: normal;
+            margin: 0;
+          }
+
+          output {
+            all: unset;
+            max-height: calc(80dvh - 12rem);
+            overflow: auto;
+
+            > * {
+              margin-top: 0.75rem;
+            }
+          }
+
+          ul {
+            list-style-type: none;
+            margin: 0.75rem 0 0 0;
+            padding: 0;
+          }
+
+          li button {
+            background: transparent;
+            color: var(--c-fg);
+            justify-content: start;
+            outline-offset: var(--outline-inset);
+            text-align: left;
+            width: 100%;
+
+            &:hover {
+              background: var(--c-surface-variant-bg);
+            }
+
+            &.focused {
+              background: var(--c-surface-variant-bg);
+            }
+
+            &.chord-match {
+              background: light-dark(var(--primary-50), var(--primary-100));
+              color: var(--primary-500);
+
+              &:hover {
+                background: light-dark(var(--primary-100), var(--primary-200));
+              }
+
+              .group-name {
+                color: var(--primary-400);
+              }
+
+              .chord {
+                border-color: var(--primary-200);
+                color: var(--primary-400);
+              }
+            }
+
+            > :empty {
+              display: none;
+            }
+          }
+
+          .group-name {
+            color: var(--c-fg-variant);
+            display: inline-block;
+            flex: none;
+            font-weight: var(--font-weight-normal);
+
+            &:after {
+              content: "›";
+              margin-left: 0.75ch;
+            }
+          }
+
+          .chord {
+            background: var(--c-surface-bg);
+            border-radius: var(--border-radius-small);
+            border: var(--border-width) solid var(--c-border);
+            color: var(--c-fg-variant);
+            font-family: var(--font-family-mono);
+            font-size: var(--font-size-mono);
+            margin-left: auto;
+            padding: 0 0.25rem;
+          }
+        }
+      </style>
+
+      <header>
+        <label>
+          <span class="visually-hidden">${state.searchLabel}</span>
+          <input
+            type="search"
+            .value="${state.query}"
+            placeholder="${state.searchLabel}"
+            required
+            @input="${(event) =>
+              this.#state.setKey("query", event.target.value)}"
+          />
+        </label>
+      </header>
+
+      <output has-fallback="${state.results.length ? "" : "empty"}">
+        <ul>
+          ${state.results.map(
+            (r, i) =>
+              html`<li>
+                <button
+                  class="${classMap({
+                    focused: i === state.focusedResult,
+                    "chord-match": r.chord === state.query,
+                  })}""
+                  @click="${() => this.#runCommand(r)}"
+                >
+                  <span class="icon">${r.icon}</span>
+                  <span class="group-name">${r.groupName}</span>
+                  <span class="clamp">${r.name}</span>
+                  <span class="chord">${r.chord}</span>
+                </button>
+              </li>`,
+          )}
+        </ul>
+
+        <div fallback-for="empty">
+          <p>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="lucide lucide-frown"
+            >
+              <circle cx="12" cy="12" r="10" />
+              <path d="M16 16s-1.5-2-4-2-4 2-4 2" />
+              <line x1="9" x2="9.01" y1="9" y2="9" />
+              <line x1="15" x2="15.01" y1="9" y2="9" />
+            </svg>
+          </p>
+          <p data-test-id="empty-message">${state.emptyMessage}</p>
+        </div>
+      </output>
+    </dialog>`;
+
+  #render() {
+    render(
+      this.#template({
+        emptyMessage: this.emptyMessage,
+        focusedResult: this.#state.get().focusedResult,
+        query: this.#state.get().query,
+        results: this.#results.get(),
+        searchLabel: this.placeholder,
+      }),
+      this,
+    );
   }
 }

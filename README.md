@@ -70,17 +70,13 @@ See [mod.d.ts](./mod.d.ts) for all available methods and docs.
 
 ## Development
 
-> [!WARNING]
->
-> (Some) spaghetti code ahead 🍝 I haven't really figured out a sensible way of managing state and rendering updates in vanilla web components yet. Let me know if you found one!
-
 Packages are managed by [npm](https://npmjs.org). Tests are powered by [Node.js' test runner](https://nodejs.org/en/learn/test-runner/introduction). The following commands are available:
 
 ```sh
 node --run dev          # Build the library and serve index.html in watch mode
 node --run test         # Run tests once
 node --run test:watch   # Run tests in watch mode
-node --run build        # Typecheck and emit declarations
+node --run build        # Typecheck, emit declarations, and bundle
 ```
 
 For a demo, open [index.html](./index.html) in a browser.

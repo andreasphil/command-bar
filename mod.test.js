@@ -17,7 +17,7 @@ describe("CommandBar", () => {
 
     const el = container.querySelector("command-bar");
     if (!(el instanceof CommandBar)) {
-      throw new Error("[render] El has unexpected");
+      throw new Error("[render] El has unexpected type");
     }
 
     return {
@@ -53,6 +53,14 @@ describe("CommandBar", () => {
   function click(el) {
     if (!el) throw new Error("[click] Target does not exist");
     el.dispatchEvent(new MouseEvent("click"));
+  }
+
+  /**
+   * @param {string} str
+   * @returns {string}
+   */
+  function cleanWhitespace(str) {
+    return str.replace(/\s+/g, " ").trim();
   }
 
   before(async () => {
@@ -109,9 +117,8 @@ describe("CommandBar", () => {
     test("opens when a custom hotkey is pressed", async () => {
       const showModal = mock.fn();
       HTMLDialogElement.prototype.showModal = showModal;
-      render(
-        `<command-bar hotkey='{"ctrlKey":true,"shiftKey":true,"key":"p"}'></command-bar>`
-      );
+      const { el } = render();
+      el.shortcut = { key: "p", ctrlKey: true, shiftKey: true };
 
       keyboard(window, { ctrlKey: true, shiftKey: true, key: "p" });
       assert.equal(showModal.mock.callCount(), 1);
@@ -176,7 +183,7 @@ describe("CommandBar", () => {
       el.registerCommand(
         { id: "1", name: "1A", action: mock.fn() },
         { id: "2", name: "2A", action: mock.fn() },
-        { id: "3", name: "3A", action: mock.fn() }
+        { id: "3", name: "3A", action: mock.fn() },
       );
 
       el.open("a");
@@ -189,7 +196,7 @@ describe("CommandBar", () => {
       const cleanup = el.registerCommand(
         { id: "1", name: "1A", action: mock.fn() },
         { id: "2", name: "2A", action: mock.fn() },
-        { id: "3", name: "3A", action: mock.fn() }
+        { id: "3", name: "3A", action: mock.fn() },
       );
 
       el.open();
@@ -208,7 +215,7 @@ describe("CommandBar", () => {
       el.registerCommand(
         { id: "1", name: "1A", action: mock.fn() },
         { id: "2", name: "2A", action: mock.fn() },
-        { id: "3", name: "3A", action: mock.fn() }
+        { id: "3", name: "3A", action: mock.fn() },
       );
 
       el.open();
@@ -223,7 +230,7 @@ describe("CommandBar", () => {
   });
 
   describe("renders commands", () => {
-    test("limits visible results to 10 by default", async () => {
+    test("limits visible results to 10", async () => {
       const { el, $$ } = render();
 
       el.registerCommand(
@@ -237,26 +244,11 @@ describe("CommandBar", () => {
         { id: "8", name: "8A", action: mock.fn() },
         { id: "9", name: "9A", action: mock.fn() },
         { id: "10", name: "10A", action: mock.fn() },
-        { id: "11", name: "11A", action: mock.fn() }
+        { id: "11", name: "11A", action: mock.fn() },
       );
 
       el.open("a");
       assert.equal($$("button").length, 10);
-    });
-
-    test("limits visible results by a custom amount", async () => {
-      const { el, $$ } = render('<command-bar limitresults="3"></command-bar>');
-
-      el.registerCommand(
-        { id: "1", name: "1A", action: mock.fn() },
-        { id: "2", name: "2A", action: mock.fn() },
-        { id: "3", name: "3A", action: mock.fn() },
-        { id: "4", name: "4A", action: mock.fn() },
-        { id: "5", name: "5A", action: mock.fn() }
-      );
-
-      el.open("a");
-      assert.equal($$("button").length, 3);
     });
 
     test("shows the name", async () => {
@@ -265,7 +257,7 @@ describe("CommandBar", () => {
       el.registerCommand({ id: "1", name: "1A", action: mock.fn() });
 
       el.open("a");
-      assert.equal($("button").textContent, "1A");
+      assert.equal(cleanWhitespace($("button").textContent), "1A");
     });
 
     test("shows the group name", async () => {
@@ -279,7 +271,7 @@ describe("CommandBar", () => {
       });
 
       el.open("a");
-      assert.equal($("button").textContent, "Group1A");
+      assert.equal(cleanWhitespace($("button").textContent), "Group 1A");
     });
 
     test("shows a string icon", async () => {
@@ -293,7 +285,7 @@ describe("CommandBar", () => {
       });
 
       el.open("a");
-      assert.equal($("button").textContent, "😎1A");
+      assert.equal(cleanWhitespace($("button").textContent), "😎 1A");
     });
 
     test("shows a HTML element icon", async () => {
@@ -310,7 +302,7 @@ describe("CommandBar", () => {
       });
 
       el.open("a");
-      assert.equal($("button").textContent, "Foo1A");
+      assert.equal(cleanWhitespace($("button").textContent), "Foo 1A");
     });
 
     test("shows the chord", async () => {
@@ -324,7 +316,7 @@ describe("CommandBar", () => {
       });
 
       el.open("a");
-      assert.equal($("button").textContent, "1Aaa");
+      assert.equal(cleanWhitespace($("button").textContent), "1A aa");
     });
   });
 
@@ -377,7 +369,7 @@ describe("CommandBar", () => {
 
       el.open();
       input($("input"), "a");
-      assert($$("button")[0].className.includes("cb__result--focused"));
+      assert($$("button")[0].className.includes("focused"));
     });
 
     test("doesn't show commands when the search is empty", async () => {
@@ -395,12 +387,12 @@ describe("CommandBar", () => {
       el.registerCommand(
         { id: "1", name: "1A", chord: "x", action: mock.fn() },
         { id: "2", name: "2A", chord: "y", action: mock.fn() },
-        { id: "3", name: "3A", chord: "z", action: mock.fn() }
+        { id: "3", name: "3A", chord: "z", action: mock.fn() },
       );
 
       el.open();
       input($("input"), "y");
-      assert.equal($("button").textContent, "2Ay");
+      assert.equal(cleanWhitespace($("button").textContent), "2A y");
     });
 
     test("does not show the same command twice when found by chord and query", async () => {
@@ -424,12 +416,12 @@ describe("CommandBar", () => {
       el.registerCommand(
         { id: "1", name: "1A", chord: "x", action: mock.fn() },
         { id: "2", name: "2A", chord: "y", action: mock.fn() },
-        { id: "3", name: "3A", chord: "z", action: mock.fn() }
+        { id: "3", name: "3A", chord: "z", action: mock.fn() },
       );
 
       el.open();
       input($("input"), "y");
-      assert($("button").className.includes("cb__result--chord-match"));
+      assert($("button").className.includes("chord-match"));
     });
 
     test("doesn't highlight matches not found via chord", async () => {
@@ -438,12 +430,12 @@ describe("CommandBar", () => {
       el.registerCommand(
         { id: "1", name: "1A", chord: "x", action: mock.fn() },
         { id: "2", name: "2A", chord: "y", action: mock.fn() },
-        { id: "3", name: "3A", chord: "z", action: mock.fn() }
+        { id: "3", name: "3A", chord: "z", action: mock.fn() },
       );
 
       el.open();
       input($("input"), "2A");
-      assert(!$("button").className.includes("cb__result--chord-match"));
+      assert(!$("button").className.includes("chord-match"));
     });
 
     test("shows chord matches before other commands", async () => {
@@ -452,13 +444,13 @@ describe("CommandBar", () => {
       el.registerCommand(
         { id: "1", name: "1A", chord: "x", action: mock.fn() },
         { id: "2", name: "2B", chord: "a", action: mock.fn() },
-        { id: "3", name: "3A", chord: "z", action: mock.fn() }
+        { id: "3", name: "3A", chord: "z", action: mock.fn() },
       );
 
       el.open();
       input($("input"), "a");
-      assert($$("button")[0].className.includes("cb__result--chord-match"));
-      assert(!$$("button")[1].className.includes("cb__result--chord-match"));
+      assert($$("button")[0].className.includes("chord-match"));
+      assert(!$$("button")[1].className.includes("chord-match"));
     });
 
     test("clears search on escape", async () => {
@@ -476,16 +468,16 @@ describe("CommandBar", () => {
       el.registerCommand(
         { id: "1", name: "1A", action: mock.fn() },
         { id: "2", name: "2A", action: mock.fn() },
-        { id: "3", name: "3A", action: mock.fn() }
+        { id: "3", name: "3A", action: mock.fn() },
       );
 
       el.open();
       input($("input"), "a");
-      assert.equal($$(".cb__result--focused").length, 1);
-      assert($$("button")[0].className.includes("cb__result--focused"));
+      assert.equal($$(".focused").length, 1);
+      assert($$("button")[0].className.includes("focused"));
 
       keyboard(window, { key: "ArrowDown" });
-      assert($$("button")[1].className.includes("cb__result--focused"));
+      assert($$("button")[1].className.includes("focused"));
     });
 
     test("moves focus up", async () => {
@@ -494,19 +486,19 @@ describe("CommandBar", () => {
       el.registerCommand(
         { id: "1", name: "1A", action: mock.fn() },
         { id: "2", name: "2A", action: mock.fn() },
-        { id: "3", name: "3A", action: mock.fn() }
+        { id: "3", name: "3A", action: mock.fn() },
       );
 
       el.open();
       input($("input"), "a");
-      assert.equal($$(".cb__result--focused").length, 1);
-      assert($$("button")[0].className.includes("cb__result--focused"));
+      assert.equal($$(".focused").length, 1);
+      assert($$("button")[0].className.includes("focused"));
 
       keyboard(window, { key: "ArrowDown" });
-      assert($$("button")[1].className.includes("cb__result--focused"));
+      assert($$("button")[1].className.includes("focused"));
 
       keyboard(window, { key: "ArrowUp" });
-      assert($$("button")[0].className.includes("cb__result--focused"));
+      assert($$("button")[0].className.includes("focused"));
     });
 
     test("doesn't move focus before the first item", async () => {
@@ -515,16 +507,16 @@ describe("CommandBar", () => {
       el.registerCommand(
         { id: "1", name: "1A", action: mock.fn() },
         { id: "2", name: "2A", action: mock.fn() },
-        { id: "3", name: "3A", action: mock.fn() }
+        { id: "3", name: "3A", action: mock.fn() },
       );
 
       el.open();
       input($("input"), "a");
-      assert.equal($$(".cb__result--focused").length, 1);
-      assert($$("button")[0].className.includes("cb__result--focused"));
+      assert.equal($$(".focused").length, 1);
+      assert($$("button")[0].className.includes("focused"));
 
       keyboard(window, { key: "ArrowUp" });
-      assert($$("button")[0].className.includes("cb__result--focused"));
+      assert($$("button")[0].className.includes("focused"));
     });
 
     test("doesn't move focus past the last item", async () => {
@@ -533,22 +525,22 @@ describe("CommandBar", () => {
       el.registerCommand(
         { id: "1", name: "1A", action: mock.fn() },
         { id: "2", name: "2A", action: mock.fn() },
-        { id: "3", name: "3A", action: mock.fn() }
+        { id: "3", name: "3A", action: mock.fn() },
       );
 
       el.open();
       input($("input"), "a");
-      assert.equal($$(".cb__result--focused").length, 1);
-      assert($$("button")[0].className.includes("cb__result--focused"));
+      assert.equal($$(".focused").length, 1);
+      assert($$("button")[0].className.includes("focused"));
 
       keyboard(window, { key: "ArrowDown" });
-      assert($$("button")[1].className.includes("cb__result--focused"));
+      assert($$("button")[1].className.includes("focused"));
 
       keyboard(window, { key: "ArrowDown" });
-      assert($$("button")[2].className.includes("cb__result--focused"));
+      assert($$("button")[2].className.includes("focused"));
 
       keyboard(window, { key: "ArrowDown" });
-      assert($$("button")[2].className.includes("cb__result--focused"));
+      assert($$("button")[2].className.includes("focused"));
     });
 
     test("starts focus at the first item", async () => {
@@ -557,13 +549,13 @@ describe("CommandBar", () => {
       el.registerCommand(
         { id: "1", name: "1A", action: mock.fn() },
         { id: "2", name: "2A", action: mock.fn() },
-        { id: "3", name: "3A", action: mock.fn() }
+        { id: "3", name: "3A", action: mock.fn() },
       );
 
       el.open();
       input($("input"), "a");
-      assert.equal($$(".cb__result--focused").length, 1);
-      assert($$("button")[0].className.includes("cb__result--focused"));
+      assert.equal($$(".focused").length, 1);
+      assert($$("button")[0].className.includes("focused"));
     });
 
     test("finds commands by name", async () => {
@@ -572,12 +564,12 @@ describe("CommandBar", () => {
       el.registerCommand(
         { id: "1", name: "1A", action: mock.fn() },
         { id: "2", name: "2A", action: mock.fn() },
-        { id: "3", name: "3A", action: mock.fn() }
+        { id: "3", name: "3A", action: mock.fn() },
       );
 
       el.open();
       input($("input"), "1A");
-      assert.equal($("button").textContent, "1A");
+      assert.equal(cleanWhitespace($("button") .textContent), "1A");
     });
 
     test("finds commands by group name", async () => {
@@ -586,12 +578,12 @@ describe("CommandBar", () => {
       el.registerCommand(
         { id: "1", name: "1A", groupName: "GX", action: mock.fn() },
         { id: "2", name: "2A", groupName: "GY", action: mock.fn() },
-        { id: "3", name: "3A", groupName: "GZ", action: mock.fn() }
+        { id: "3", name: "3A", groupName: "GZ", action: mock.fn() },
       );
 
       el.open();
       input($("input"), "GX");
-      assert.equal($("button").textContent, "GX1A");
+      assert.equal(cleanWhitespace($("button") .textContent), "GX 1A");
     });
 
     test("finds commands by alias", async () => {
@@ -600,12 +592,12 @@ describe("CommandBar", () => {
       el.registerCommand(
         { id: "1", name: "1A", alias: ["AX"], action: mock.fn() },
         { id: "2", name: "2A", alias: ["AY"], action: mock.fn() },
-        { id: "3", name: "3A", alias: ["AZ"], action: mock.fn() }
+        { id: "3", name: "3A", alias: ["AZ"], action: mock.fn() },
       );
 
       el.open();
       input($("input"), "AX");
-      assert.equal($("button").textContent, "1A");
+      assert.equal(cleanWhitespace($("button") .textContent), "1A");
     });
 
     test("narrows selection with additional search terms", async () => {
@@ -614,12 +606,12 @@ describe("CommandBar", () => {
       el.registerCommand(
         { id: "1", name: "1A One", action: mock.fn() },
         { id: "2", name: "1A Two", action: mock.fn() },
-        { id: "3", name: "1A Three", action: mock.fn() }
+        { id: "3", name: "1A Three", action: mock.fn() },
       );
 
       el.open();
       input($("input"), "1 tw");
-      assert.equal($("button").textContent, "1A Two");
+      assert.equal(cleanWhitespace($("button") .textContent), "1A Two");
     });
 
     test("searches case-insensitive", async () => {
@@ -628,12 +620,12 @@ describe("CommandBar", () => {
       el.registerCommand(
         { id: "1", name: "1A", action: mock.fn() },
         { id: "2", name: "2A", action: mock.fn() },
-        { id: "3", name: "3A", action: mock.fn() }
+        { id: "3", name: "3A", action: mock.fn() },
       );
 
       el.open();
       input($("input"), "1a");
-      assert.equal($("button").textContent, "1A");
+      assert.equal(cleanWhitespace($("button") .textContent), "1A");
     });
 
     test("ranks results by weight", async () => {
@@ -642,14 +634,14 @@ describe("CommandBar", () => {
       el.registerCommand(
         { id: "1", name: "1A", action: mock.fn() },
         { id: "2", name: "2A", action: mock.fn(), weight: 20 },
-        { id: "3", name: "3A", action: mock.fn(), weight: 10 }
+        { id: "3", name: "3A", action: mock.fn(), weight: 10 },
       );
 
       el.open();
       input($("input"), "a");
-      assert.equal($$("button")[0].textContent, "2A");
-      assert.equal($$("button")[1].textContent, "3A");
-      assert.equal($$("button")[2].textContent, "1A");
+      assert.equal(cleanWhitespace($$("button")[0].textContent), "2A");
+      assert.equal(cleanWhitespace($$("button")[1].textContent), "3A");
+      assert.equal(cleanWhitespace($$("button")[2].textContent), "1A");
     });
 
     test("shows the default empty state when no result is found", async () => {
@@ -658,7 +650,7 @@ describe("CommandBar", () => {
       el.registerCommand(
         { id: "1", name: "1A", action: mock.fn() },
         { id: "2", name: "2A", action: mock.fn() },
-        { id: "3", name: "3A", action: mock.fn() }
+        { id: "3", name: "3A", action: mock.fn() },
       );
 
       el.open();
@@ -666,20 +658,20 @@ describe("CommandBar", () => {
       assert(!$("button"));
 
       assert.equal(
-        $("[data-ref='emptyMessage']").textContent,
-        "Sorry, couldnʼt find anything."
+        $("[data-test-id=empty-message]").textContent,
+        "Sorry, couldnʼt find anything.",
       );
     });
 
     test("shows a custom empty state when no result is found", async () => {
       const { el, $ } = render(
-        '<command-bar emptymessage="Custom empty state"></command-bar>'
+        '<command-bar emptymessage="Custom empty state"></command-bar>',
       );
 
       el.registerCommand(
         { id: "1", name: "1A", action: mock.fn() },
         { id: "2", name: "2A", action: mock.fn() },
-        { id: "3", name: "3A", action: mock.fn() }
+        { id: "3", name: "3A", action: mock.fn() },
       );
 
       el.open();
@@ -687,8 +679,8 @@ describe("CommandBar", () => {
       assert(!$("button"));
 
       assert.equal(
-        $("[data-ref='emptyMessage']").textContent,
-        "Custom empty state"
+        $("[data-test-id=empty-message]").textContent,
+        "Custom empty state",
       );
     });
   });

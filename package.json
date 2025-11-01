@@ -8,24 +8,34 @@
   "repository": "https://github.com/andreasphil/command-bar",
   "exports": {
     ".": {
-      "import": "./mod.js",
-      "types": "./mod.d.ts"
+      "import": "./dist/mod.js",
+      "types": "./dist/mod.d.ts"
     }
   },
   "scripts": {
+    "dev": "vite",
     "test": "node --test",
     "test:watch": "node --test --watch",
-    "build": "node --run build:types",
+    "build": "node --run build:bundle && node --run build:types",
     "build:types": "tsc",
-    "preversion": "node --run test && node --run build && git add ./*.d.ts",
+    "build:bundle": "vite build",
+    "preversion": "node --run test && node --run build && git add dist/",
     "typecheck": "tsc --noEmit"
   },
   "peerDependencies": {
     "@andreasphil/design-system": "github:andreasphil/design-system#v0.53.0"
   },
   "devDependencies": {
-    "esbuild": "^0.25.9",
-    "jsdom": "^26.1.0",
-    "typescript": "^5.9.2"
-  }
+    "jsdom": "^27.1.0",
+    "rolldown-vite": "^7.1.20",
+    "typescript": "^5.9.3"
+  },
+  "dependencies": {
+    "lit-html": "^3.3.1",
+    "nanostores": "^1.0.1"
+  },
+  "bundleDependencies": [
+    "lit-html",
+    "nanostores"
+  ]
 }
