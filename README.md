@@ -41,7 +41,7 @@ import { CommandBar } from "@andreasphil/command-bar";
 CommandBar.define();
 ```
 
-After that, the component will be available in the HTML:
+After that, the component will be available in HTML:
 
 ```html
 <command-bar></command-bar>
@@ -66,23 +66,21 @@ cleanup = CommandBar.instance.registerCommand({
 
 ### API
 
-See [mod.d.ts](./mod.d.ts) for all available methods and docs.
+See [mod.d.ts](./dist/mod.d.ts) for all available methods and docs.
 
 ## Development
 
 Packages are managed by [npm](https://npmjs.org). Tests are powered by [Node.js' test runner](https://nodejs.org/en/learn/test-runner/introduction). The following commands are available:
 
 ```sh
-node --run dev          # Build the library and serve index.html in watch mode
+node --run dev          # Start development server
 node --run test         # Run tests once
 node --run test:watch   # Run tests in watch mode
 node --run build        # Typecheck, emit declarations, and bundle
 ```
 
-For a demo, open [index.html](./index.html) in a browser.
-
 ## Credits
 
-This library uses a number of open source packages listed in [package.json](./package.json), as well as icons from [Lucide](https://lucide.dev).
+This library uses a number of open source packages listed in [package.json](./package.json). Icons are from [Lucide](https://lucide.dev).
 
 Thanks 🙏
