@@ -71,6 +71,15 @@ export class CommandBar extends HTMLElement {
 
   // State --------------------------------------------------
 
+  /**
+   * @type {import("nanostores").MapStore<{
+   *  commands: Command[];
+   *  focusedResult: number;
+   *  mostRecent: Command | null;
+   *  open: boolean;
+   *  query: string;
+   * }>}
+   */
   #state = map({
     commands: [],
     focusedResult: 0,
@@ -199,10 +208,10 @@ export class CommandBar extends HTMLElement {
   #toggle(open = !this.#state.get().open) {
     if (open === this.#state.get().open) return;
     else if (open) {
-      this.#dialog.showModal();
+      this.#dialog?.showModal();
       this.#state.setKey("open", true);
     } else {
-      this.#dialog.close();
+      this.#dialog?.close();
       this.#state.setKey("focusedResult", 0);
       this.#state.setKey("open", false);
       this.#state.setKey("query", "");
@@ -283,8 +292,9 @@ export class CommandBar extends HTMLElement {
   }
 
   #runMostRecent() {
-    if (this.#state.get().mostRecent && this.allowRepeat) {
-      this.#runCommand(this.#state.get().mostRecent);
+    const command = this.#state.get().mostRecent;
+    if (command && this.allowRepeat) {
+      this.#runCommand(command);
     }
   }
 

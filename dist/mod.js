@@ -597,10 +597,10 @@ var CommandBar = class CommandBar extends HTMLElement {
 	#toggle(open = !this.#state.get().open) {
 		if (open === this.#state.get().open) return;
 		else if (open) {
-			this.#dialog.showModal();
+			this.#dialog?.showModal();
 			this.#state.setKey("open", true);
 		} else {
-			this.#dialog.close();
+			this.#dialog?.close();
 			this.#state.setKey("focusedResult", 0);
 			this.#state.setKey("open", false);
 			this.#state.setKey("query", "");
@@ -654,7 +654,8 @@ var CommandBar = class CommandBar extends HTMLElement {
 		if (focused) this.#runCommand(focused);
 	}
 	#runMostRecent() {
-		if (this.#state.get().mostRecent && this.allowRepeat) this.#runCommand(this.#state.get().mostRecent);
+		const command = this.#state.get().mostRecent;
+		if (command && this.allowRepeat) this.#runCommand(command);
 	}
 	#runCommand(command) {
 		command.action();
