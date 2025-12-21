@@ -70,7 +70,7 @@ See [mod.d.ts](./dist/mod.d.ts) for all available methods and docs.
 
 ## Development
 
-Packages are managed by [npm](https://npmjs.org). Tests are powered by [Node.js' test runner](https://nodejs.org/en/learn/test-runner/introduction). The following commands are available:
+Packages are managed by [pnpm](https://pnpm.io). Tests are powered by [Node.js' test runner](https://nodejs.org/en/learn/test-runner/introduction). The following commands are available:
 
 ```sh
 node --run dev          # Start development server
