@@ -312,7 +312,7 @@ var listenerQueue = [];
 var lqIndex = 0;
 var QUEUE_ITEMS_PER_LISTENER = 4;
 let epoch = 0;
-let atom = (initialValue) => {
+const atom = /* @__NO_SIDE_EFFECTS__ */ (initialValue) => {
 	let listeners = [];
 	let $atom = {
 		get() {
@@ -449,7 +449,7 @@ var computedStore = (stores, cb, batched) => {
 			}
 		}
 	};
-	let $computed = atom(void 0);
+	let $computed = /* @__PURE__ */ atom(void 0);
 	let get = $computed.get;
 	$computed.get = () => {
 		set();
@@ -469,7 +469,7 @@ var computedStore = (stores, cb, batched) => {
 	});
 	return $computed;
 };
-let computed = (stores, fn) => computedStore(stores, fn);
+const computed = /* @__NO_SIDE_EFFECTS__ */ (stores, fn) => computedStore(stores, fn);
 let effect = (stores, callback) => {
 	if (!Array.isArray(stores)) stores = [stores];
 	let unbinds = [];
@@ -485,8 +485,8 @@ let effect = (stores, callback) => {
 		lastRunUnbind && lastRunUnbind();
 	};
 };
-let map = (initial = {}) => {
-	let $map = atom(initial);
+const map = /* @__NO_SIDE_EFFECTS__ */ (initial = {}) => {
+	let $map = /* @__PURE__ */ atom(initial);
 	$map.setKey = function(key, value) {
 		let oldMap = $map.value;
 		if (typeof value === "undefined" && key in $map.value) {
@@ -519,18 +519,18 @@ var CommandBar = class CommandBar extends HTMLElement {
 			return instance[0];
 		} else throw new Error("No CommandBar instance found.");
 	}
-	#state = map({
+	#state = /* @__PURE__ */ map({
 		commands: [],
 		focusedResult: 0,
 		mostRecent: null,
 		open: false,
 		query: ""
 	});
-	#chords = computed(this.#state, (state) => state.commands.reduce((all, current) => {
+	#chords = /* @__PURE__ */ computed(this.#state, (state) => state.commands.reduce((all, current) => {
 		if (current.chord) all[current.chord] = current;
 		return all;
 	}, {}));
-	#results = computed([this.#state, this.#chords], (state, chords) => {
+	#results = /* @__PURE__ */ computed([this.#state, this.#chords], (state, chords) => {
 		if (!this.#state.get().query) return [];
 		const matchingChord = chords[state.query];
 		const queryTokens = state.query.toLowerCase().split(" ");
@@ -638,6 +638,10 @@ var CommandBar = class CommandBar extends HTMLElement {
 	#onEsc() {
 		if (this.#state.get().query) this.#state.setKey("query", "");
 		else this.#toggle(false);
+	}
+	#onQueryChange(event) {
+		if (!(event.target instanceof HTMLInputElement)) return;
+		this.#state.setKey("query", event.target.value);
 	}
 	#moveFocusDown() {
 		const commandCount = this.#results.get().length;
@@ -766,7 +770,7 @@ var CommandBar = class CommandBar extends HTMLElement {
             .value="${state.query}"
             placeholder="${state.searchLabel}"
             required
-            @input="${(event) => this.#state.setKey("query", event.target.value)}"
+            @input="${(event) => this.#onQueryChange(event)}"
           />
         </label>
       </header>

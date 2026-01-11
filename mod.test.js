@@ -1,4 +1,3 @@
-// @ts-check
 import { JSDOM } from "jsdom";
 import assert from "node:assert/strict";
 import { afterEach, before, describe, test, mock } from "node:test";
@@ -21,8 +20,17 @@ describe("CommandBar", () => {
     }
 
     return {
-      $: (sel) => container.querySelector(sel),
-      $$: (sel) => container.querySelectorAll(sel),
+      /**
+       * @template {keyof HTMLElementTagNameMap} K
+       * @param {K | string} sel
+       * @returns {HTMLElementTagNameMap[K]}
+       */
+      $: (sel) => {
+        const element = container.querySelector(sel);
+        if (!element) throw new Error(`Element not found: ${sel}`);
+        return /** @type {any} */ (element);
+      },
+      $$: (/** @type {string} */ sel) => container.querySelectorAll(sel),
       container,
       el,
     };
@@ -569,7 +577,7 @@ describe("CommandBar", () => {
 
       el.open();
       input($("input"), "1A");
-      assert.equal(cleanWhitespace($("button") .textContent), "1A");
+      assert.equal(cleanWhitespace($("button").textContent), "1A");
     });
 
     test("finds commands by group name", async () => {
@@ -583,7 +591,7 @@ describe("CommandBar", () => {
 
       el.open();
       input($("input"), "GX");
-      assert.equal(cleanWhitespace($("button") .textContent), "GX 1A");
+      assert.equal(cleanWhitespace($("button").textContent), "GX 1A");
     });
 
     test("finds commands by alias", async () => {
@@ -597,7 +605,7 @@ describe("CommandBar", () => {
 
       el.open();
       input($("input"), "AX");
-      assert.equal(cleanWhitespace($("button") .textContent), "1A");
+      assert.equal(cleanWhitespace($("button").textContent), "1A");
     });
 
     test("narrows selection with additional search terms", async () => {
@@ -611,7 +619,7 @@ describe("CommandBar", () => {
 
       el.open();
       input($("input"), "1 tw");
-      assert.equal(cleanWhitespace($("button") .textContent), "1A Two");
+      assert.equal(cleanWhitespace($("button").textContent), "1A Two");
     });
 
     test("searches case-insensitive", async () => {
@@ -625,7 +633,7 @@ describe("CommandBar", () => {
 
       el.open();
       input($("input"), "1a");
-      assert.equal(cleanWhitespace($("button") .textContent), "1A");
+      assert.equal(cleanWhitespace($("button").textContent), "1A");
     });
 
     test("ranks results by weight", async () => {
@@ -655,7 +663,7 @@ describe("CommandBar", () => {
 
       el.open();
       input($("input"), "foo");
-      assert(!$("button"));
+      assert.throws(() => $("button"));
 
       assert.equal(
         $("[data-test-id=empty-message]").textContent,
@@ -676,7 +684,7 @@ describe("CommandBar", () => {
 
       el.open();
       input($("input"), "foo");
-      assert(!$("button"));
+      assert.throws(() => $("button"));
 
       assert.equal(
         $("[data-test-id=empty-message]").textContent,

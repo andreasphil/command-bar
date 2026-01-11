@@ -93,7 +93,7 @@ export class CommandBar extends HTMLElement {
     state.commands.reduce((all, current) => {
       if (current.chord) all[current.chord] = current;
       return all;
-    }, {}),
+    }, /** @type {Record<string, Command>} */ ({})),
   );
 
   /** @type {import("nanostores").ReadableAtom<Command[]>} */
@@ -232,7 +232,7 @@ export class CommandBar extends HTMLElement {
     );
 
     let match = Object.entries(strictShortcut).reduce((match, [key, value]) => {
-      return match && event[key] === value;
+      return match && event[/** @type {keyof KeyboardEvent} */ (key)] === value;
     }, true);
 
     if (!match) return;
@@ -272,6 +272,12 @@ export class CommandBar extends HTMLElement {
   #onEsc() {
     if (this.#state.get().query) this.#state.setKey("query", "");
     else this.#toggle(false);
+  }
+
+  /** @param {KeyboardEvent} event  */
+  #onQueryChange(event) {
+    if (!(event.target instanceof HTMLInputElement)) return;
+    this.#state.setKey("query", event.target.value);
   }
 
   #moveFocusDown() {
@@ -420,8 +426,8 @@ export class CommandBar extends HTMLElement {
             .value="${state.query}"
             placeholder="${state.searchLabel}"
             required
-            @input="${(event) =>
-              this.#state.setKey("query", event.target.value)}"
+            @input="${(/** @type {KeyboardEvent} */ event) =>
+              this.#onQueryChange(event)}"
           />
         </label>
       </header>

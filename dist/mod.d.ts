@@ -67,23 +67,23 @@ export type Command = {
      * searches for one of them, the alias will be treated as if it was the name
      * of the command.
      */
-    alias?: string[];
+    alias?: string[] | undefined;
     /**
      * A unique combination of characters. If the user
      * types those exact characters in the search field, the associated command
      * will be shown prominently and highlighted.
      */
-    chord?: string;
+    chord?: string | undefined;
     /**
      * An additional label displayed before the name.
      */
-    groupName?: string;
+    groupName?: string | undefined;
     /**
      * Icon of the command. Should be a string
      * (which will be inserted as text content) or an HTML element (which will be
      * inserted as-is).
      */
-    icon?: string | HTMLElement;
+    icon?: string | HTMLElement | undefined;
     /**
      * Callback to run when the command is invoked.
      */
@@ -92,6 +92,6 @@ export type Command = {
      * Used for sorting. Items with a higher weight
      * will always appear before items with a lower weight.
      */
-    weight?: number;
+    weight?: number | undefined;
 };
 export type KeyboardShortcut = Partial<Pick<KeyboardEvent, "key" | "metaKey" | "altKey" | "ctrlKey" | "shiftKey">>;

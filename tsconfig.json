@@ -5,13 +5,17 @@
     "checkJs": true,
     "declaration": true,
     "emitDeclarationOnly": true,
+    "erasableSyntaxOnly": true,
     "lib": ["esnext", "DOM"],
     "module": "esnext",
     "moduleResolution": "bundler",
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
     "outDir": "dist",
     "skipLibCheck": true,
-    "target": "esnext"
+    "strict": true,
+    "target": "esnext",
   },
   "include": ["**/*.js", "**/*.ts"],
-  "exclude": ["**/*.spec.*", "**/*.test.*", "**/*.config.js", "./dist/**/*"]
+  "exclude": ["**/*.config.js", "./dist/**/*"],
 }
