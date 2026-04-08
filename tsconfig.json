@@ -14,8 +14,8 @@
     "outDir": "dist",
     "skipLibCheck": true,
     "strict": true,
-    "target": "esnext",
+    "target": "esnext"
   },
-  "include": ["**/*.js", "**/*.ts"],
   "exclude": ["**/*.config.js", "./dist/**/*"],
+  "include": ["**/*.js", "**/*.ts"]
 }

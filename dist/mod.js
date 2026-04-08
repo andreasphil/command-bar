@@ -1,96 +1,97 @@
+//#region node_modules/.pnpm/lit-html@3.3.2/node_modules/lit-html/lit-html.js
 /**
 * @license
 * Copyright 2017 Google LLC
 * SPDX-License-Identifier: BSD-3-Clause
 */
-var t$1 = globalThis, i$1 = t$1.trustedTypes, s = i$1 ? i$1.createPolicy("lit-html", { createHTML: (t$2) => t$2 }) : void 0, e$2 = "$lit$", h = `lit$${Math.random().toFixed(9).slice(2)}$`, o = "?" + h, n = `<${o}>`, r = document, l = () => r.createComment(""), c = (t$2) => null === t$2 || "object" != typeof t$2 && "function" != typeof t$2, a = Array.isArray, u = (t$2) => a(t$2) || "function" == typeof t$2?.[Symbol.iterator], d = "[ 	\n\f\r]", f = /<(?:(!--|\/[^a-zA-Z])|(\/?[a-zA-Z][^>\s]*)|(\/?$))/g, v = /-->/g, _ = />/g, m = RegExp(`>|${d}(?:([^\\s"'>=/]+)(${d}*=${d}*(?:[^ \t\n\f\r"'\`<>=]|("|')|))|$)`, "g"), p = /'/g, g = /"/g, $ = /^(?:script|style|textarea|title)$/i, y = (t$2) => (i$2, ...s$1) => ({
-	_$litType$: t$2,
-	strings: i$2,
-	values: s$1
-}), x = y(1);
-y(2);
-y(3);
-var T = Symbol.for("lit-noChange"), E = Symbol.for("lit-nothing"), A = /* @__PURE__ */ new WeakMap(), C = r.createTreeWalker(r, 129);
-function P(t$2, i$2) {
-	if (!a(t$2) || !t$2.hasOwnProperty("raw")) throw Error("invalid template strings array");
-	return void 0 !== s ? s.createHTML(i$2) : i$2;
+var t$1 = globalThis, i$1 = (t) => t, s = t$1.trustedTypes, e$2 = s ? s.createPolicy("lit-html", { createHTML: (t) => t }) : void 0, h = "$lit$", o = `lit$${Math.random().toFixed(9).slice(2)}$`, n = "?" + o, r = `<${n}>`, l = document, c = () => l.createComment(""), a = (t) => null === t || "object" != typeof t && "function" != typeof t, u = Array.isArray, d = (t) => u(t) || "function" == typeof t?.[Symbol.iterator], f = "[ 	\n\f\r]", v = /<(?:(!--|\/[^a-zA-Z])|(\/?[a-zA-Z][^>\s]*)|(\/?$))/g, _ = /-->/g, m = />/g, p = RegExp(`>|${f}(?:([^\\s"'>=/]+)(${f}*=${f}*(?:[^ \t\n\f\r"'\`<>=]|("|')|))|$)`, "g"), g = /'/g, $ = /"/g, y = /^(?:script|style|textarea|title)$/i, x = (t) => (i, ...s) => ({
+	_$litType$: t,
+	strings: i,
+	values: s
+}), b = x(1);
+x(2);
+x(3);
+var E = Symbol.for("lit-noChange"), A = Symbol.for("lit-nothing"), C = /* @__PURE__ */ new WeakMap(), P = l.createTreeWalker(l, 129);
+function V(t, i) {
+	if (!u(t) || !t.hasOwnProperty("raw")) throw Error("invalid template strings array");
+	return void 0 !== e$2 ? e$2.createHTML(i) : i;
 }
-var V = (t$2, i$2) => {
-	const s$1 = t$2.length - 1, o$1 = [];
-	let r$1, l$1 = 2 === i$2 ? "<svg>" : 3 === i$2 ? "<math>" : "", c$1 = f;
-	for (let i$3 = 0; i$3 < s$1; i$3++) {
-		const s$2 = t$2[i$3];
-		let a$1, u$1, d$1 = -1, y$1 = 0;
-		for (; y$1 < s$2.length && (c$1.lastIndex = y$1, u$1 = c$1.exec(s$2), null !== u$1);) y$1 = c$1.lastIndex, c$1 === f ? "!--" === u$1[1] ? c$1 = v : void 0 !== u$1[1] ? c$1 = _ : void 0 !== u$1[2] ? ($.test(u$1[2]) && (r$1 = RegExp("</" + u$1[2], "g")), c$1 = m) : void 0 !== u$1[3] && (c$1 = m) : c$1 === m ? ">" === u$1[0] ? (c$1 = r$1 ?? f, d$1 = -1) : void 0 === u$1[1] ? d$1 = -2 : (d$1 = c$1.lastIndex - u$1[2].length, a$1 = u$1[1], c$1 = void 0 === u$1[3] ? m : "\"" === u$1[3] ? g : p) : c$1 === g || c$1 === p ? c$1 = m : c$1 === v || c$1 === _ ? c$1 = f : (c$1 = m, r$1 = void 0);
-		const x$1 = c$1 === m && t$2[i$3 + 1].startsWith("/>") ? " " : "";
-		l$1 += c$1 === f ? s$2 + n : d$1 >= 0 ? (o$1.push(a$1), s$2.slice(0, d$1) + e$2 + s$2.slice(d$1) + h + x$1) : s$2 + h + (-2 === d$1 ? i$3 : x$1);
+var N = (t, i) => {
+	const s = t.length - 1, e = [];
+	let n, l = 2 === i ? "<svg>" : 3 === i ? "<math>" : "", c = v;
+	for (let i = 0; i < s; i++) {
+		const s = t[i];
+		let a, u, d = -1, f = 0;
+		for (; f < s.length && (c.lastIndex = f, u = c.exec(s), null !== u);) f = c.lastIndex, c === v ? "!--" === u[1] ? c = _ : void 0 !== u[1] ? c = m : void 0 !== u[2] ? (y.test(u[2]) && (n = RegExp("</" + u[2], "g")), c = p) : void 0 !== u[3] && (c = p) : c === p ? ">" === u[0] ? (c = n ?? v, d = -1) : void 0 === u[1] ? d = -2 : (d = c.lastIndex - u[2].length, a = u[1], c = void 0 === u[3] ? p : "\"" === u[3] ? $ : g) : c === $ || c === g ? c = p : c === _ || c === m ? c = v : (c = p, n = void 0);
+		const x = c === p && t[i + 1].startsWith("/>") ? " " : "";
+		l += c === v ? s + r : d >= 0 ? (e.push(a), s.slice(0, d) + h + s.slice(d) + o + x) : s + o + (-2 === d ? i : x);
 	}
-	return [P(t$2, l$1 + (t$2[s$1] || "<?>") + (2 === i$2 ? "</svg>" : 3 === i$2 ? "</math>" : "")), o$1];
+	return [V(t, l + (t[s] || "<?>") + (2 === i ? "</svg>" : 3 === i ? "</math>" : "")), e];
 };
-var N = class N {
-	constructor({ strings: t$2, _$litType$: s$1 }, n$1) {
-		let r$1;
+var S = class S {
+	constructor({ strings: t, _$litType$: i }, e) {
+		let r;
 		this.parts = [];
-		let c$1 = 0, a$1 = 0;
-		const u$1 = t$2.length - 1, d$1 = this.parts, [f$1, v$1] = V(t$2, s$1);
-		if (this.el = N.createElement(f$1, n$1), C.currentNode = this.el.content, 2 === s$1 || 3 === s$1) {
-			const t$3 = this.el.content.firstChild;
-			t$3.replaceWith(...t$3.childNodes);
+		let l = 0, a = 0;
+		const u = t.length - 1, d = this.parts, [f, v] = N(t, i);
+		if (this.el = S.createElement(f, e), P.currentNode = this.el.content, 2 === i || 3 === i) {
+			const t = this.el.content.firstChild;
+			t.replaceWith(...t.childNodes);
 		}
-		for (; null !== (r$1 = C.nextNode()) && d$1.length < u$1;) {
-			if (1 === r$1.nodeType) {
-				if (r$1.hasAttributes()) for (const t$3 of r$1.getAttributeNames()) if (t$3.endsWith(e$2)) {
-					const i$2 = v$1[a$1++], s$2 = r$1.getAttribute(t$3).split(h), e$3 = /([.?@])?(.*)/.exec(i$2);
-					d$1.push({
+		for (; null !== (r = P.nextNode()) && d.length < u;) {
+			if (1 === r.nodeType) {
+				if (r.hasAttributes()) for (const t of r.getAttributeNames()) if (t.endsWith(h)) {
+					const i = v[a++], s = r.getAttribute(t).split(o), e = /([.?@])?(.*)/.exec(i);
+					d.push({
 						type: 1,
-						index: c$1,
-						name: e$3[2],
-						strings: s$2,
-						ctor: "." === e$3[1] ? H : "?" === e$3[1] ? I : "@" === e$3[1] ? L : k
-					}), r$1.removeAttribute(t$3);
-				} else t$3.startsWith(h) && (d$1.push({
+						index: l,
+						name: e[2],
+						strings: s,
+						ctor: "." === e[1] ? I : "?" === e[1] ? L : "@" === e[1] ? z : H
+					}), r.removeAttribute(t);
+				} else t.startsWith(o) && (d.push({
 					type: 6,
-					index: c$1
-				}), r$1.removeAttribute(t$3));
-				if ($.test(r$1.tagName)) {
-					const t$3 = r$1.textContent.split(h), s$2 = t$3.length - 1;
-					if (s$2 > 0) {
-						r$1.textContent = i$1 ? i$1.emptyScript : "";
-						for (let i$2 = 0; i$2 < s$2; i$2++) r$1.append(t$3[i$2], l()), C.nextNode(), d$1.push({
+					index: l
+				}), r.removeAttribute(t));
+				if (y.test(r.tagName)) {
+					const t = r.textContent.split(o), i = t.length - 1;
+					if (i > 0) {
+						r.textContent = s ? s.emptyScript : "";
+						for (let s = 0; s < i; s++) r.append(t[s], c()), P.nextNode(), d.push({
 							type: 2,
-							index: ++c$1
+							index: ++l
 						});
-						r$1.append(t$3[s$2], l());
+						r.append(t[i], c());
 					}
 				}
-			} else if (8 === r$1.nodeType) if (r$1.data === o) d$1.push({
+			} else if (8 === r.nodeType) if (r.data === n) d.push({
 				type: 2,
-				index: c$1
+				index: l
 			});
 			else {
-				let t$3 = -1;
-				for (; -1 !== (t$3 = r$1.data.indexOf(h, t$3 + 1));) d$1.push({
+				let t = -1;
+				for (; -1 !== (t = r.data.indexOf(o, t + 1));) d.push({
 					type: 7,
-					index: c$1
-				}), t$3 += h.length - 1;
+					index: l
+				}), t += o.length - 1;
 			}
-			c$1++;
+			l++;
 		}
 	}
-	static createElement(t$2, i$2) {
-		const s$1 = r.createElement("template");
-		return s$1.innerHTML = t$2, s$1;
+	static createElement(t, i) {
+		const s = l.createElement("template");
+		return s.innerHTML = t, s;
 	}
 };
-function S(t$2, i$2, s$1 = t$2, e$3) {
-	if (i$2 === T) return i$2;
-	let h$1 = void 0 !== e$3 ? s$1._$Co?.[e$3] : s$1._$Cl;
-	const o$1 = c(i$2) ? void 0 : i$2._$litDirective$;
-	return h$1?.constructor !== o$1 && (h$1?._$AO?.(!1), void 0 === o$1 ? h$1 = void 0 : (h$1 = new o$1(t$2), h$1._$AT(t$2, s$1, e$3)), void 0 !== e$3 ? (s$1._$Co ??= [])[e$3] = h$1 : s$1._$Cl = h$1), void 0 !== h$1 && (i$2 = S(t$2, h$1._$AS(t$2, i$2.values), h$1, e$3)), i$2;
+function M(t, i, s = t, e) {
+	if (i === E) return i;
+	let h = void 0 !== e ? s._$Co?.[e] : s._$Cl;
+	const o = a(i) ? void 0 : i._$litDirective$;
+	return h?.constructor !== o && (h?._$AO?.(!1), void 0 === o ? h = void 0 : (h = new o(t), h._$AT(t, s, e)), void 0 !== e ? (s._$Co ??= [])[e] = h : s._$Cl = h), void 0 !== h && (i = M(t, h._$AS(t, i.values), h, e)), i;
 }
-var M = class {
-	constructor(t$2, i$2) {
-		this._$AV = [], this._$AN = void 0, this._$AD = t$2, this._$AM = i$2;
+var R = class {
+	constructor(t, i) {
+		this._$AV = [], this._$AN = void 0, this._$AD = t, this._$AM = i;
 	}
 	get parentNode() {
 		return this._$AM.parentNode;
@@ -98,35 +99,35 @@ var M = class {
 	get _$AU() {
 		return this._$AM._$AU;
 	}
-	u(t$2) {
-		const { el: { content: i$2 }, parts: s$1 } = this._$AD, e$3 = (t$2?.creationScope ?? r).importNode(i$2, !0);
-		C.currentNode = e$3;
-		let h$1 = C.nextNode(), o$1 = 0, n$1 = 0, l$1 = s$1[0];
-		for (; void 0 !== l$1;) {
-			if (o$1 === l$1.index) {
-				let i$3;
-				2 === l$1.type ? i$3 = new R(h$1, h$1.nextSibling, this, t$2) : 1 === l$1.type ? i$3 = new l$1.ctor(h$1, l$1.name, l$1.strings, this, t$2) : 6 === l$1.type && (i$3 = new z(h$1, this, t$2)), this._$AV.push(i$3), l$1 = s$1[++n$1];
+	u(t) {
+		const { el: { content: i }, parts: s } = this._$AD, e = (t?.creationScope ?? l).importNode(i, !0);
+		P.currentNode = e;
+		let h = P.nextNode(), o = 0, n = 0, r = s[0];
+		for (; void 0 !== r;) {
+			if (o === r.index) {
+				let i;
+				2 === r.type ? i = new k(h, h.nextSibling, this, t) : 1 === r.type ? i = new r.ctor(h, r.name, r.strings, this, t) : 6 === r.type && (i = new Z(h, this, t)), this._$AV.push(i), r = s[++n];
 			}
-			o$1 !== l$1?.index && (h$1 = C.nextNode(), o$1++);
+			o !== r?.index && (h = P.nextNode(), o++);
 		}
-		return C.currentNode = r, e$3;
+		return P.currentNode = l, e;
 	}
-	p(t$2) {
-		let i$2 = 0;
-		for (const s$1 of this._$AV) void 0 !== s$1 && (void 0 !== s$1.strings ? (s$1._$AI(t$2, s$1, i$2), i$2 += s$1.strings.length - 2) : s$1._$AI(t$2[i$2])), i$2++;
+	p(t) {
+		let i = 0;
+		for (const s of this._$AV) void 0 !== s && (void 0 !== s.strings ? (s._$AI(t, s, i), i += s.strings.length - 2) : s._$AI(t[i])), i++;
 	}
 };
-var R = class R {
+var k = class k {
 	get _$AU() {
 		return this._$AM?._$AU ?? this._$Cv;
 	}
-	constructor(t$2, i$2, s$1, e$3) {
-		this.type = 2, this._$AH = E, this._$AN = void 0, this._$AA = t$2, this._$AB = i$2, this._$AM = s$1, this.options = e$3, this._$Cv = e$3?.isConnected ?? !0;
+	constructor(t, i, s, e) {
+		this.type = 2, this._$AH = A, this._$AN = void 0, this._$AA = t, this._$AB = i, this._$AM = s, this.options = e, this._$Cv = e?.isConnected ?? !0;
 	}
 	get parentNode() {
-		let t$2 = this._$AA.parentNode;
-		const i$2 = this._$AM;
-		return void 0 !== i$2 && 11 === t$2?.nodeType && (t$2 = i$2.parentNode), t$2;
+		let t = this._$AA.parentNode;
+		const i = this._$AM;
+		return void 0 !== i && 11 === t?.nodeType && (t = i.parentNode), t;
 	}
 	get startNode() {
 		return this._$AA;
@@ -134,122 +135,124 @@ var R = class R {
 	get endNode() {
 		return this._$AB;
 	}
-	_$AI(t$2, i$2 = this) {
-		t$2 = S(this, t$2, i$2), c(t$2) ? t$2 === E || null == t$2 || "" === t$2 ? (this._$AH !== E && this._$AR(), this._$AH = E) : t$2 !== this._$AH && t$2 !== T && this._(t$2) : void 0 !== t$2._$litType$ ? this.$(t$2) : void 0 !== t$2.nodeType ? this.T(t$2) : u(t$2) ? this.k(t$2) : this._(t$2);
+	_$AI(t, i = this) {
+		t = M(this, t, i), a(t) ? t === A || null == t || "" === t ? (this._$AH !== A && this._$AR(), this._$AH = A) : t !== this._$AH && t !== E && this._(t) : void 0 !== t._$litType$ ? this.$(t) : void 0 !== t.nodeType ? this.T(t) : d(t) ? this.k(t) : this._(t);
 	}
-	O(t$2) {
-		return this._$AA.parentNode.insertBefore(t$2, this._$AB);
+	O(t) {
+		return this._$AA.parentNode.insertBefore(t, this._$AB);
 	}
-	T(t$2) {
-		this._$AH !== t$2 && (this._$AR(), this._$AH = this.O(t$2));
+	T(t) {
+		this._$AH !== t && (this._$AR(), this._$AH = this.O(t));
 	}
-	_(t$2) {
-		this._$AH !== E && c(this._$AH) ? this._$AA.nextSibling.data = t$2 : this.T(r.createTextNode(t$2)), this._$AH = t$2;
+	_(t) {
+		this._$AH !== A && a(this._$AH) ? this._$AA.nextSibling.data = t : this.T(l.createTextNode(t)), this._$AH = t;
 	}
-	$(t$2) {
-		const { values: i$2, _$litType$: s$1 } = t$2, e$3 = "number" == typeof s$1 ? this._$AC(t$2) : (void 0 === s$1.el && (s$1.el = N.createElement(P(s$1.h, s$1.h[0]), this.options)), s$1);
-		if (this._$AH?._$AD === e$3) this._$AH.p(i$2);
+	$(t) {
+		const { values: i, _$litType$: s } = t, e = "number" == typeof s ? this._$AC(t) : (void 0 === s.el && (s.el = S.createElement(V(s.h, s.h[0]), this.options)), s);
+		if (this._$AH?._$AD === e) this._$AH.p(i);
 		else {
-			const t$3 = new M(e$3, this), s$2 = t$3.u(this.options);
-			t$3.p(i$2), this.T(s$2), this._$AH = t$3;
+			const t = new R(e, this), s = t.u(this.options);
+			t.p(i), this.T(s), this._$AH = t;
 		}
 	}
-	_$AC(t$2) {
-		let i$2 = A.get(t$2.strings);
-		return void 0 === i$2 && A.set(t$2.strings, i$2 = new N(t$2)), i$2;
+	_$AC(t) {
+		let i = C.get(t.strings);
+		return void 0 === i && C.set(t.strings, i = new S(t)), i;
 	}
-	k(t$2) {
-		a(this._$AH) || (this._$AH = [], this._$AR());
-		const i$2 = this._$AH;
-		let s$1, e$3 = 0;
-		for (const h$1 of t$2) e$3 === i$2.length ? i$2.push(s$1 = new R(this.O(l()), this.O(l()), this, this.options)) : s$1 = i$2[e$3], s$1._$AI(h$1), e$3++;
-		e$3 < i$2.length && (this._$AR(s$1 && s$1._$AB.nextSibling, e$3), i$2.length = e$3);
+	k(t) {
+		u(this._$AH) || (this._$AH = [], this._$AR());
+		const i = this._$AH;
+		let s, e = 0;
+		for (const h of t) e === i.length ? i.push(s = new k(this.O(c()), this.O(c()), this, this.options)) : s = i[e], s._$AI(h), e++;
+		e < i.length && (this._$AR(s && s._$AB.nextSibling, e), i.length = e);
 	}
-	_$AR(t$2 = this._$AA.nextSibling, i$2) {
-		for (this._$AP?.(!1, !0, i$2); t$2 !== this._$AB;) {
-			const i$3 = t$2.nextSibling;
-			t$2.remove(), t$2 = i$3;
+	_$AR(t = this._$AA.nextSibling, s) {
+		for (this._$AP?.(!1, !0, s); t !== this._$AB;) {
+			const s = i$1(t).nextSibling;
+			i$1(t).remove(), t = s;
 		}
 	}
-	setConnected(t$2) {
-		void 0 === this._$AM && (this._$Cv = t$2, this._$AP?.(t$2));
+	setConnected(t) {
+		void 0 === this._$AM && (this._$Cv = t, this._$AP?.(t));
 	}
 };
-var k = class {
+var H = class {
 	get tagName() {
 		return this.element.tagName;
 	}
 	get _$AU() {
 		return this._$AM._$AU;
 	}
-	constructor(t$2, i$2, s$1, e$3, h$1) {
-		this.type = 1, this._$AH = E, this._$AN = void 0, this.element = t$2, this.name = i$2, this._$AM = e$3, this.options = h$1, s$1.length > 2 || "" !== s$1[0] || "" !== s$1[1] ? (this._$AH = Array(s$1.length - 1).fill(/* @__PURE__ */ new String()), this.strings = s$1) : this._$AH = E;
+	constructor(t, i, s, e, h) {
+		this.type = 1, this._$AH = A, this._$AN = void 0, this.element = t, this.name = i, this._$AM = e, this.options = h, s.length > 2 || "" !== s[0] || "" !== s[1] ? (this._$AH = Array(s.length - 1).fill(/* @__PURE__ */ new String()), this.strings = s) : this._$AH = A;
 	}
-	_$AI(t$2, i$2 = this, s$1, e$3) {
-		const h$1 = this.strings;
-		let o$1 = !1;
-		if (void 0 === h$1) t$2 = S(this, t$2, i$2, 0), o$1 = !c(t$2) || t$2 !== this._$AH && t$2 !== T, o$1 && (this._$AH = t$2);
+	_$AI(t, i = this, s, e) {
+		const h = this.strings;
+		let o = !1;
+		if (void 0 === h) t = M(this, t, i, 0), o = !a(t) || t !== this._$AH && t !== E, o && (this._$AH = t);
 		else {
-			const e$4 = t$2;
-			let n$1, r$1;
-			for (t$2 = h$1[0], n$1 = 0; n$1 < h$1.length - 1; n$1++) r$1 = S(this, e$4[s$1 + n$1], i$2, n$1), r$1 === T && (r$1 = this._$AH[n$1]), o$1 ||= !c(r$1) || r$1 !== this._$AH[n$1], r$1 === E ? t$2 = E : t$2 !== E && (t$2 += (r$1 ?? "") + h$1[n$1 + 1]), this._$AH[n$1] = r$1;
+			const e = t;
+			let n, r;
+			for (t = h[0], n = 0; n < h.length - 1; n++) r = M(this, e[s + n], i, n), r === E && (r = this._$AH[n]), o ||= !a(r) || r !== this._$AH[n], r === A ? t = A : t !== A && (t += (r ?? "") + h[n + 1]), this._$AH[n] = r;
 		}
-		o$1 && !e$3 && this.j(t$2);
+		o && !e && this.j(t);
 	}
-	j(t$2) {
-		t$2 === E ? this.element.removeAttribute(this.name) : this.element.setAttribute(this.name, t$2 ?? "");
+	j(t) {
+		t === A ? this.element.removeAttribute(this.name) : this.element.setAttribute(this.name, t ?? "");
 	}
 };
-var H = class extends k {
+var I = class extends H {
 	constructor() {
 		super(...arguments), this.type = 3;
 	}
-	j(t$2) {
-		this.element[this.name] = t$2 === E ? void 0 : t$2;
+	j(t) {
+		this.element[this.name] = t === A ? void 0 : t;
 	}
 };
-var I = class extends k {
+var L = class extends H {
 	constructor() {
 		super(...arguments), this.type = 4;
 	}
-	j(t$2) {
-		this.element.toggleAttribute(this.name, !!t$2 && t$2 !== E);
+	j(t) {
+		this.element.toggleAttribute(this.name, !!t && t !== A);
 	}
 };
-var L = class extends k {
-	constructor(t$2, i$2, s$1, e$3, h$1) {
-		super(t$2, i$2, s$1, e$3, h$1), this.type = 5;
+var z = class extends H {
+	constructor(t, i, s, e, h) {
+		super(t, i, s, e, h), this.type = 5;
 	}
-	_$AI(t$2, i$2 = this) {
-		if ((t$2 = S(this, t$2, i$2, 0) ?? E) === T) return;
-		const s$1 = this._$AH, e$3 = t$2 === E && s$1 !== E || t$2.capture !== s$1.capture || t$2.once !== s$1.once || t$2.passive !== s$1.passive, h$1 = t$2 !== E && (s$1 === E || e$3);
-		e$3 && this.element.removeEventListener(this.name, this, s$1), h$1 && this.element.addEventListener(this.name, this, t$2), this._$AH = t$2;
+	_$AI(t, i = this) {
+		if ((t = M(this, t, i, 0) ?? A) === E) return;
+		const s = this._$AH, e = t === A && s !== A || t.capture !== s.capture || t.once !== s.once || t.passive !== s.passive, h = t !== A && (s === A || e);
+		e && this.element.removeEventListener(this.name, this, s), h && this.element.addEventListener(this.name, this, t), this._$AH = t;
 	}
-	handleEvent(t$2) {
-		"function" == typeof this._$AH ? this._$AH.call(this.options?.host ?? this.element, t$2) : this._$AH.handleEvent(t$2);
+	handleEvent(t) {
+		"function" == typeof this._$AH ? this._$AH.call(this.options?.host ?? this.element, t) : this._$AH.handleEvent(t);
 	}
 };
-var z = class {
-	constructor(t$2, i$2, s$1) {
-		this.element = t$2, this.type = 6, this._$AN = void 0, this._$AM = i$2, this.options = s$1;
+var Z = class {
+	constructor(t, i, s) {
+		this.element = t, this.type = 6, this._$AN = void 0, this._$AM = i, this.options = s;
 	}
 	get _$AU() {
 		return this._$AM._$AU;
 	}
-	_$AI(t$2) {
-		S(this, t$2);
+	_$AI(t) {
+		M(this, t);
 	}
-}, j = t$1.litHtmlPolyfillSupport;
-j?.(N, R), (t$1.litHtmlVersions ??= []).push("3.3.1");
-var B = (t$2, i$2, s$1) => {
-	const e$3 = s$1?.renderBefore ?? i$2;
-	let h$1 = e$3._$litPart$;
-	if (void 0 === h$1) {
-		const t$3 = s$1?.renderBefore ?? null;
-		e$3._$litPart$ = h$1 = new R(i$2.insertBefore(l(), t$3), t$3, void 0, s$1 ?? {});
+}, B = t$1.litHtmlPolyfillSupport;
+B?.(S, k), (t$1.litHtmlVersions ??= []).push("3.3.2");
+var D = (t, i, s) => {
+	const e = s?.renderBefore ?? i;
+	let h = e._$litPart$;
+	if (void 0 === h) {
+		const t = s?.renderBefore ?? null;
+		e._$litPart$ = h = new k(i.insertBefore(c(), t), t, void 0, s ?? {});
 	}
-	return h$1._$AI(t$2), h$1;
+	return h._$AI(t), h;
 };
+//#endregion
+//#region node_modules/.pnpm/lit-html@3.3.2/node_modules/lit-html/directive.js
 /**
 * @license
 * Copyright 2017 Google LLC
@@ -262,25 +265,27 @@ var t = {
 	BOOLEAN_ATTRIBUTE: 4,
 	EVENT: 5,
 	ELEMENT: 6
-}, e$1 = (t$2) => (...e$3) => ({
-	_$litDirective$: t$2,
-	values: e$3
+}, e$1 = (t) => (...e) => ({
+	_$litDirective$: t,
+	values: e
 });
 var i = class {
-	constructor(t$2) {}
+	constructor(t) {}
 	get _$AU() {
 		return this._$AM._$AU;
 	}
-	_$AT(t$2, e$3, i$2) {
-		this._$Ct = t$2, this._$AM = e$3, this._$Ci = i$2;
+	_$AT(t, e, i) {
+		this._$Ct = t, this._$AM = e, this._$Ci = i;
 	}
-	_$AS(t$2, e$3) {
-		return this.update(t$2, e$3);
+	_$AS(t, e) {
+		return this.update(t, e);
 	}
-	update(t$2, e$3) {
-		return this.render(...e$3);
+	update(t, e) {
+		return this.render(...e);
 	}
 };
+//#endregion
+//#region node_modules/.pnpm/lit-html@3.3.2/node_modules/lit-html/directives/class-map.js
 /**
 * @license
 * Copyright 2018 Google LLC
@@ -289,42 +294,47 @@ var i = class {
 	constructor(t$2) {
 		if (super(t$2), t$2.type !== t.ATTRIBUTE || "class" !== t$2.name || t$2.strings?.length > 2) throw Error("`classMap()` can only be used in the `class` attribute and must be the only part in the attribute.");
 	}
-	render(t$2) {
-		return " " + Object.keys(t$2).filter(((s$1) => t$2[s$1])).join(" ") + " ";
+	render(t) {
+		return " " + Object.keys(t).filter((s) => t[s]).join(" ") + " ";
 	}
-	update(s$1, [i$2]) {
+	update(s, [i]) {
 		if (void 0 === this.st) {
-			this.st = /* @__PURE__ */ new Set(), void 0 !== s$1.strings && (this.nt = new Set(s$1.strings.join(" ").split(/\s/).filter(((t$2) => "" !== t$2))));
-			for (const t$2 in i$2) i$2[t$2] && !this.nt?.has(t$2) && this.st.add(t$2);
-			return this.render(i$2);
+			this.st = /* @__PURE__ */ new Set(), void 0 !== s.strings && (this.nt = new Set(s.strings.join(" ").split(/\s/).filter((t) => "" !== t)));
+			for (const t in i) i[t] && !this.nt?.has(t) && this.st.add(t);
+			return this.render(i);
 		}
-		const r$1 = s$1.element.classList;
-		for (const t$2 of this.st) t$2 in i$2 || (r$1.remove(t$2), this.st.delete(t$2));
-		for (const t$2 in i$2) {
-			const s$2 = !!i$2[t$2];
-			s$2 === this.st.has(t$2) || this.nt?.has(t$2) || (s$2 ? (r$1.add(t$2), this.st.add(t$2)) : (r$1.remove(t$2), this.st.delete(t$2)));
+		const r = s.element.classList;
+		for (const t of this.st) t in i || (r.remove(t), this.st.delete(t));
+		for (const t in i) {
+			const s = !!i[t];
+			s === this.st.has(t) || this.nt?.has(t) || (s ? (r.add(t), this.st.add(t)) : (r.remove(t), this.st.delete(t)));
 		}
-		return T;
+		return E;
 	}
 });
-let clean = Symbol("clean");
+//#endregion
+//#region node_modules/.pnpm/nanostores@1.2.0/node_modules/nanostores/clean-stores/index.js
+var clean = Symbol("clean");
+//#endregion
+//#region node_modules/.pnpm/nanostores@1.2.0/node_modules/nanostores/atom/index.js
 var listenerQueue = [];
 var lqIndex = 0;
 var QUEUE_ITEMS_PER_LISTENER = 4;
-let epoch = 0;
-const atom = /* @__NO_SIDE_EFFECTS__ */ (initialValue) => {
+var epoch = 0;
+var atom = /* @__NO_SIDE_EFFECTS__ */ (initialValue) => {
 	let listeners = [];
 	let $atom = {
 		get() {
 			if (!$atom.lc) $atom.listen(() => {})();
 			return $atom.value;
 		},
+		init: initialValue,
 		lc: 0,
 		listen(listener) {
 			$atom.lc = listeners.push(listener);
 			return () => {
-				for (let i$2 = lqIndex + QUEUE_ITEMS_PER_LISTENER; i$2 < listenerQueue.length;) if (listenerQueue[i$2] === listener) listenerQueue.splice(i$2, QUEUE_ITEMS_PER_LISTENER);
-				else i$2 += QUEUE_ITEMS_PER_LISTENER;
+				for (let i = lqIndex + QUEUE_ITEMS_PER_LISTENER; i < listenerQueue.length;) if (listenerQueue[i] === listener) listenerQueue.splice(i, QUEUE_ITEMS_PER_LISTENER);
+				else i += QUEUE_ITEMS_PER_LISTENER;
 				let index = listeners.indexOf(listener);
 				if (~index) {
 					listeners.splice(index, 1);
@@ -363,13 +373,15 @@ const atom = /* @__NO_SIDE_EFFECTS__ */ (initialValue) => {
 	};
 	return $atom;
 };
+//#endregion
+//#region node_modules/.pnpm/nanostores@1.2.0/node_modules/nanostores/lifecycle/index.js
 var MOUNT = 5;
 var UNMOUNT = 6;
 var REVERT_MUTATION = 10;
-let on = (object, listener, eventKey, mutateStore) => {
+var on = (object, listener, eventKey, mutateStore) => {
 	object.events = object.events || {};
 	if (!object.events[eventKey + REVERT_MUTATION]) object.events[eventKey + REVERT_MUTATION] = mutateStore((eventProps) => {
-		object.events[eventKey].reduceRight((event, l$1) => (l$1(event), event), {
+		object.events[eventKey].reduceRight((event, l) => (l(event), event), {
 			shared: {},
 			...eventProps
 		});
@@ -387,8 +399,8 @@ let on = (object, listener, eventKey, mutateStore) => {
 		}
 	};
 };
-let STORE_UNMOUNT_DELAY = 1e3;
-let onMount = ($store, initialize) => {
+var STORE_UNMOUNT_DELAY = 1e3;
+var onMount = ($store, initialize) => {
 	let listener = (payload) => {
 		let destroy = initialize(payload);
 		if (destroy) $store.events[UNMOUNT].push(destroy);
@@ -429,6 +441,21 @@ let onMount = ($store, initialize) => {
 		};
 	});
 };
+//#endregion
+//#region node_modules/.pnpm/nanostores@1.2.0/node_modules/nanostores/warn/index.js
+var warned = {};
+function warn(text) {
+	if (!warned[text]) {
+		warned[text] = true;
+		if (typeof console !== "undefined" && console.warn) {
+			console.groupCollapsed("Nano Stores: " + text);
+			console.trace("Source of deprecated call");
+			console.groupEnd();
+		}
+	}
+}
+//#endregion
+//#region node_modules/.pnpm/nanostores@1.2.0/node_modules/nanostores/computed/index.js
 var computedStore = (stores, cb, batched) => {
 	if (!Array.isArray(stores)) stores = [stores];
 	let previousArgs;
@@ -437,13 +464,15 @@ var computedStore = (stores, cb, batched) => {
 		if (currentEpoch === epoch) return;
 		currentEpoch = epoch;
 		let args = stores.map(($store) => $store.get());
-		if (!previousArgs || args.some((arg, i$2) => arg !== previousArgs[i$2])) {
+		if (!previousArgs || args.some((arg, i) => arg !== previousArgs[i])) {
 			previousArgs = args;
 			let value = cb(...args);
-			if (value && value.then && value.t) value.then((asyncValue) => {
-				if (previousArgs === args) $computed.set(asyncValue);
-			});
-			else {
+			if (value && value.then && value.t) {
+				if (process.env.NODE_ENV !== "production") warn("Use @nanostores/async for async computed. We will remove Promise support in computed() in Nano Stores 2.0");
+				value.then((asyncValue) => {
+					if (previousArgs === args) $computed.set(asyncValue);
+				});
+			} else {
 				$computed.set(value);
 				currentEpoch = epoch;
 			}
@@ -469,8 +498,10 @@ var computedStore = (stores, cb, batched) => {
 	});
 	return $computed;
 };
-const computed = /* @__NO_SIDE_EFFECTS__ */ (stores, fn) => computedStore(stores, fn);
-let effect = (stores, callback) => {
+var computed = /* @__NO_SIDE_EFFECTS__ */ (stores, fn) => computedStore(stores, fn);
+//#endregion
+//#region node_modules/.pnpm/nanostores@1.2.0/node_modules/nanostores/effect/index.js
+var effect = (stores, callback) => {
 	if (!Array.isArray(stores)) stores = [stores];
 	let unbinds = [];
 	let lastRunUnbind;
@@ -485,7 +516,9 @@ let effect = (stores, callback) => {
 		lastRunUnbind && lastRunUnbind();
 	};
 };
-const map = /* @__NO_SIDE_EFFECTS__ */ (initial = {}) => {
+//#endregion
+//#region node_modules/.pnpm/nanostores@1.2.0/node_modules/nanostores/map/index.js
+var map = /* @__NO_SIDE_EFFECTS__ */ (initial = {}) => {
 	let $map = /* @__PURE__ */ atom(initial);
 	$map.setKey = function(key, value) {
 		let oldMap = $map.value;
@@ -503,6 +536,44 @@ const map = /* @__NO_SIDE_EFFECTS__ */ (initial = {}) => {
 	};
 	return $map;
 };
+//#endregion
+//#region mod.js
+/**
+* @typedef Command
+*
+* @property {string} id The unique identifier of the command. Can be any string.
+*
+* @property {string} name The visible name of the command.
+*
+* @property {string[]} [alias] A list of aliases of the command. If the user
+*  searches for one of them, the alias will be treated as if it was the name
+*  of the command.
+*
+* @property {string} [chord] A unique combination of characters. If the user
+*  types those exact characters in the search field, the associated command
+*  will be shown prominently and highlighted.
+*
+* @property {string} [groupName] An additional label displayed before the name.
+*
+* @property {string | HTMLElement} [icon] Icon of the command. Should be a string
+*  (which will be inserted as text content) or an HTML element (which will be
+*  inserted as-is).
+*
+* @property {() => void} action Callback to run when the command is invoked.
+*
+* @property {number} [weight] Used for sorting. Items with a higher weight
+*  will always appear before items with a lower weight.
+*/
+/**
+* @typedef {Partial<Pick<KeyboardEvent, "key" | "metaKey" | "altKey" | "ctrlKey" | "shiftKey">>} KeyboardShortcut
+*/
+/**
+* Takes an SVG string and converts it into an HTML element. Useful for
+* displaying icons in the command bar.
+*
+* @param {string} svg
+* @returns {HTMLElement}
+*/
 function renderSvgFromString(svg) {
 	return new DOMParser().parseFromString(svg, "image/svg+xml").documentElement;
 }
@@ -519,6 +590,15 @@ var CommandBar = class CommandBar extends HTMLElement {
 			return instance[0];
 		} else throw new Error("No CommandBar instance found.");
 	}
+	/**
+	* @type {import("nanostores").MapStore<{
+	*  commands: Command[];
+	*  focusedResult: number;
+	*  mostRecent: Command | null;
+	*  open: boolean;
+	*  query: string;
+	* }>}
+	*/
 	#state = /* @__PURE__ */ map({
 		commands: [],
 		focusedResult: 0,
@@ -526,26 +606,29 @@ var CommandBar = class CommandBar extends HTMLElement {
 		open: false,
 		query: ""
 	});
+	/** @type {import("nanostores").Atom<Record<string, Command>>} */
 	#chords = /* @__PURE__ */ computed(this.#state, (state) => state.commands.reduce((all, current) => {
 		if (current.chord) all[current.chord] = current;
 		return all;
 	}, {}));
+	/** @type {import("nanostores").ReadableAtom<Command[]>} */
 	#results = /* @__PURE__ */ computed([this.#state, this.#chords], (state, chords) => {
 		if (!this.#state.get().query) return [];
 		const matchingChord = chords[state.query];
 		const queryTokens = state.query.toLowerCase().split(" ");
-		const results = state.commands.filter((i$2) => {
-			if (matchingChord && matchingChord.id === i$2.id) return false;
+		const results = state.commands.filter((i) => {
+			if (matchingChord && matchingChord.id === i.id) return false;
 			const commandStr = [
-				i$2.name,
-				...i$2.alias ?? [],
-				i$2.groupName ?? ""
+				i.name,
+				...i.alias ?? [],
+				i.groupName ?? ""
 			].join(" ").toLowerCase();
 			return queryTokens.every((token) => commandStr.includes(token));
-		}).slice(0, 10).sort((a$1, b$1) => (b$1.weight ?? 0) - (a$1.weight ?? 0));
+		}).slice(0, 10).sort((a, b) => (b.weight ?? 0) - (a.weight ?? 0));
 		if (matchingChord) results.unshift(matchingChord);
 		return results;
 	});
+	/** @type {KeyboardShortcut} */
 	shortcut = {
 		key: "k",
 		metaKey: true
@@ -557,8 +640,9 @@ var CommandBar = class CommandBar extends HTMLElement {
 	get emptyMessage() {
 		return this.getAttribute("emptymessage") ?? "Sorry, couldnʼt find anything.";
 	}
+	/** @param {Command[]} toRegister */
 	registerCommand(...toRegister) {
-		const ids = toRegister.map((c$1) => c$1.id);
+		const ids = toRegister.map((c) => c.id);
 		this.removeCommand(...ids);
 		const next = this.#state.get().commands.concat(...toRegister);
 		this.#state.setKey("commands", next);
@@ -566,8 +650,9 @@ var CommandBar = class CommandBar extends HTMLElement {
 			this.removeCommand(...ids);
 		};
 	}
+	/** @param {string[]} toRemove */
 	removeCommand(...toRemove) {
-		const next = this.#state.get().commands.filter((c$1) => !toRemove.includes(c$1.id));
+		const next = this.#state.get().commands.filter((c) => !toRemove.includes(c.id));
 		this.#state.setKey("commands", next);
 		const mostRecent = this.#state.get().mostRecent;
 		if (mostRecent && toRemove.includes(mostRecent.id)) this.#state.setKey("mostRecent", null);
@@ -581,8 +666,8 @@ var CommandBar = class CommandBar extends HTMLElement {
 		super();
 	}
 	connectedCallback() {
-		addEventListener("keydown", (e$3) => this.#onToggleShortcut(e$3), { signal: this.#disconnectedController.signal });
-		addEventListener("keydown", (e$3) => this.#onGlobalKeydown(e$3), { signal: this.#disconnectedController.signal });
+		addEventListener("keydown", (e) => this.#onToggleShortcut(e), { signal: this.#disconnectedController.signal });
+		addEventListener("keydown", (e) => this.#onGlobalKeydown(e), { signal: this.#disconnectedController.signal });
 		effect([this.#state, this.#results], () => {
 			this.#render();
 		});
@@ -606,6 +691,7 @@ var CommandBar = class CommandBar extends HTMLElement {
 			this.#state.setKey("query", "");
 		}
 	}
+	/** @param {KeyboardEvent} event */
 	#onToggleShortcut(event) {
 		const strictShortcut = Object.assign({
 			altKey: false,
@@ -621,6 +707,7 @@ var CommandBar = class CommandBar extends HTMLElement {
 		event.preventDefault();
 		event.stopPropagation();
 	}
+	/** @param {KeyboardEvent} event */
 	#onGlobalKeydown(event) {
 		if (event.key === "." && event.metaKey) {
 			this.#runMostRecent();
@@ -639,6 +726,7 @@ var CommandBar = class CommandBar extends HTMLElement {
 		if (this.#state.get().query) this.#state.setKey("query", "");
 		else this.#toggle(false);
 	}
+	/** @param {KeyboardEvent} event  */
 	#onQueryChange(event) {
 		if (!(event.target instanceof HTMLInputElement)) return;
 		this.#state.setKey("query", event.target.value);
@@ -661,12 +749,21 @@ var CommandBar = class CommandBar extends HTMLElement {
 		const command = this.#state.get().mostRecent;
 		if (command && this.allowRepeat) this.#runCommand(command);
 	}
+	/** @param {Command} command */
 	#runCommand(command) {
 		command.action();
 		this.#state.setKey("mostRecent", command);
 		this.#toggle(false);
 	}
-	#template = (state) => x`<dialog>
+	/**
+	* @param {object} state
+	* @param {Command[]} state.results
+	* @param {number} state.focusedResult
+	* @param {string} state.emptyMessage
+	* @param {string} state.query
+	* @param {string} state.searchLabel
+	*/
+	#template = (state) => b`<dialog>
       <style>
         @scope {
           :scope {
@@ -777,18 +874,18 @@ var CommandBar = class CommandBar extends HTMLElement {
 
       <output has-fallback="${state.results.length ? "" : "empty"}">
         <ul>
-          ${state.results.map((r$1, i$2) => x`<li>
+          ${state.results.map((r, i) => b`<li>
                 <button
                   class="${e({
-		focused: i$2 === state.focusedResult,
-		"chord-match": r$1.chord === state.query
+		focused: i === state.focusedResult,
+		"chord-match": r.chord === state.query
 	})}""
-                  @click="${() => this.#runCommand(r$1)}"
+                  @click="${() => this.#runCommand(r)}"
                 >
-                  <span class="icon">${r$1.icon}</span>
-                  <span class="group-name">${r$1.groupName}</span>
-                  <span class="clamp">${r$1.name}</span>
-                  <span class="chord">${r$1.chord}</span>
+                  <span class="icon">${r.icon}</span>
+                  <span class="group-name">${r.groupName}</span>
+                  <span class="clamp">${r.name}</span>
+                  <span class="chord">${r.chord}</span>
                 </button>
               </li>`)}
         </ul>
@@ -818,7 +915,7 @@ var CommandBar = class CommandBar extends HTMLElement {
       </output>
     </dialog>`;
 	#render() {
-		B(this.#template({
+		D(this.#template({
 			emptyMessage: this.emptyMessage,
 			focusedResult: this.#state.get().focusedResult,
 			query: this.#state.get().query,
@@ -827,4 +924,5 @@ var CommandBar = class CommandBar extends HTMLElement {
 		}), this);
 	}
 };
+//#endregion
 export { CommandBar, renderSvgFromString };
