@@ -2,10 +2,10 @@
   "name": "@andreasphil/command-bar",
   "version": "0.14.0",
   "description": "⌘K command bar web component",
-  "author": "Andreas Philippi",
   "license": "MIT",
-  "type": "module",
+  "author": "Andreas Philippi",
   "repository": "https://github.com/andreasphil/command-bar",
+  "type": "module",
   "exports": {
     ".": {
       "import": "./dist/mod.js",
@@ -22,17 +22,17 @@
     "preversion": "node --run test && node --run build && git add dist/",
     "typecheck": "tsc --noEmit"
   },
+  "dependencies": {
+    "@andreasphil/design-system": "github:andreasphil/design-system",
+    "lit-html": "^3.3.2",
+    "nanostores": "^1.2.0"
+  },
   "devDependencies": {
     "@types/jsdom": "^28.0.1",
     "@types/node": "^25.5.2",
     "jsdom": "29.0.2",
     "typescript": "^6.0.2",
     "vite": "^8.0.7"
-  },
-  "dependencies": {
-    "@andreasphil/design-system": "github:andreasphil/design-system",
-    "lit-html": "^3.3.2",
-    "nanostores": "^1.2.0"
   },
   "bundleDependencies": [
     "lit-html",

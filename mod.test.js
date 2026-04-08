@@ -1,6 +1,6 @@
-import { JSDOM } from "jsdom";
 import assert from "node:assert/strict";
 import { afterEach, before, describe, test, mock } from "node:test";
+import { JSDOM } from "jsdom";
 
 describe("CommandBar", () => {
   /** @type {import("jsdom").DOMWindow} */
@@ -55,9 +55,7 @@ describe("CommandBar", () => {
     el.dispatchEvent(new InputEvent("input", { bubbles: true }));
   }
 
-  /**
-   * @param {HTMLElement | import("jsdom").DOMWindow | null} el
-   */
+  /** @param {HTMLElement | import("jsdom").DOMWindow | null} el */
   function click(el) {
     if (!el) throw new Error("[click] Target does not exist");
     el.dispatchEvent(new MouseEvent("click"));
@@ -665,16 +663,11 @@ describe("CommandBar", () => {
       input($("input"), "foo");
       assert.throws(() => $("button"));
 
-      assert.equal(
-        $("[data-test-id=empty-message]").textContent,
-        "Sorry, couldnʼt find anything.",
-      );
+      assert.equal($("[data-test-id=empty-message]").textContent, "Sorry, couldnʼt find anything.");
     });
 
     test("shows a custom empty state when no result is found", async () => {
-      const { el, $ } = render(
-        '<command-bar emptymessage="Custom empty state"></command-bar>',
-      );
+      const { el, $ } = render('<command-bar emptymessage="Custom empty state"></command-bar>');
 
       el.registerCommand(
         { id: "1", name: "1A", action: mock.fn() },
@@ -686,10 +679,7 @@ describe("CommandBar", () => {
       input($("input"), "foo");
       assert.throws(() => $("button"));
 
-      assert.equal(
-        $("[data-test-id=empty-message]").textContent,
-        "Custom empty state",
-      );
+      assert.equal($("[data-test-id=empty-message]").textContent, "Custom empty state");
     });
   });
 });

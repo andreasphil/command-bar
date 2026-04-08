@@ -1,35 +1,23 @@
 /**
  * @typedef Command
- *
  * @property {string} id The unique identifier of the command. Can be any string.
- *
  * @property {string} name The visible name of the command.
- *
- * @property {string[]} [alias] A list of aliases of the command. If the user
- *  searches for one of them, the alias will be treated as if it was the name
- *  of the command.
- *
- * @property {string} [chord] A unique combination of characters. If the user
- *  types those exact characters in the search field, the associated command
- *  will be shown prominently and highlighted.
- *
+ * @property {string[]} [alias] A list of aliases of the command. If the user searches for one of
+ *   them, the alias will be treated as if it was the name of the command.
+ * @property {string} [chord] A unique combination of characters. If the user types those exact
+ *   characters in the search field, the associated command will be shown prominently and
+ *   highlighted.
  * @property {string} [groupName] An additional label displayed before the name.
- *
- * @property {string | HTMLElement} [icon] Icon of the command. Should be a string
- *  (which will be inserted as text content) or an HTML element (which will be
- *  inserted as-is).
- *
+ * @property {string | HTMLElement} [icon] Icon of the command. Should be a string (which will be
+ *   inserted as text content) or an HTML element (which will be inserted as-is).
  * @property {() => void} action Callback to run when the command is invoked.
- *
- * @property {number} [weight] Used for sorting. Items with a higher weight
- *  will always appear before items with a lower weight.
+ * @property {number} [weight] Used for sorting. Items with a higher weight will always appear
+ *   before items with a lower weight.
  */
+/** @typedef {Partial<Pick<KeyboardEvent, "key" | "metaKey" | "altKey" | "ctrlKey" | "shiftKey">>} KeyboardShortcut */
 /**
- * @typedef {Partial<Pick<KeyboardEvent, "key" | "metaKey" | "altKey" | "ctrlKey" | "shiftKey">>} KeyboardShortcut
- */
-/**
- * Takes an SVG string and converts it into an HTML element. Useful for
- * displaying icons in the command bar.
+ * Takes an SVG string and converts it into an HTML element. Useful for displaying icons in the
+ * command bar.
  *
  * @param {string} svg
  * @returns {HTMLElement}
@@ -63,15 +51,14 @@ export type Command = {
      */
     name: string;
     /**
-     * A list of aliases of the command. If the user
-     * searches for one of them, the alias will be treated as if it was the name
-     * of the command.
+     * A list of aliases of the command. If the user searches for one of
+     * them, the alias will be treated as if it was the name of the command.
      */
     alias?: string[] | undefined;
     /**
-     * A unique combination of characters. If the user
-     * types those exact characters in the search field, the associated command
-     * will be shown prominently and highlighted.
+     * A unique combination of characters. If the user types those exact
+     * characters in the search field, the associated command will be shown prominently and
+     * highlighted.
      */
     chord?: string | undefined;
     /**
@@ -79,9 +66,8 @@ export type Command = {
      */
     groupName?: string | undefined;
     /**
-     * Icon of the command. Should be a string
-     * (which will be inserted as text content) or an HTML element (which will be
-     * inserted as-is).
+     * Icon of the command. Should be a string (which will be
+     * inserted as text content) or an HTML element (which will be inserted as-is).
      */
     icon?: string | HTMLElement | undefined;
     /**
@@ -89,8 +75,8 @@ export type Command = {
      */
     action: () => void;
     /**
-     * Used for sorting. Items with a higher weight
-     * will always appear before items with a lower weight.
+     * Used for sorting. Items with a higher weight will always appear
+     * before items with a lower weight.
      */
     weight?: number | undefined;
 };

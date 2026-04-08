@@ -6,40 +6,28 @@ import { computed, effect, map } from "nanostores";
 
 /**
  * @typedef Command
- *
  * @property {string} id The unique identifier of the command. Can be any string.
- *
  * @property {string} name The visible name of the command.
- *
- * @property {string[]} [alias] A list of aliases of the command. If the user
- *  searches for one of them, the alias will be treated as if it was the name
- *  of the command.
- *
- * @property {string} [chord] A unique combination of characters. If the user
- *  types those exact characters in the search field, the associated command
- *  will be shown prominently and highlighted.
- *
+ * @property {string[]} [alias] A list of aliases of the command. If the user searches for one of
+ *   them, the alias will be treated as if it was the name of the command.
+ * @property {string} [chord] A unique combination of characters. If the user types those exact
+ *   characters in the search field, the associated command will be shown prominently and
+ *   highlighted.
  * @property {string} [groupName] An additional label displayed before the name.
- *
- * @property {string | HTMLElement} [icon] Icon of the command. Should be a string
- *  (which will be inserted as text content) or an HTML element (which will be
- *  inserted as-is).
- *
+ * @property {string | HTMLElement} [icon] Icon of the command. Should be a string (which will be
+ *   inserted as text content) or an HTML element (which will be inserted as-is).
  * @property {() => void} action Callback to run when the command is invoked.
- *
- * @property {number} [weight] Used for sorting. Items with a higher weight
- *  will always appear before items with a lower weight.
+ * @property {number} [weight] Used for sorting. Items with a higher weight will always appear
+ *   before items with a lower weight.
  */
 
-/**
- * @typedef {Partial<Pick<KeyboardEvent, "key" | "metaKey" | "altKey" | "ctrlKey" | "shiftKey">>} KeyboardShortcut
- */
+/** @typedef {Partial<Pick<KeyboardEvent, "key" | "metaKey" | "altKey" | "ctrlKey" | "shiftKey">>} KeyboardShortcut */
 
 // Utils --------------------------------------------------
 
 /**
- * Takes an SVG string and converts it into an HTML element. Useful for
- * displaying icons in the command bar.
+ * Takes an SVG string and converts it into an HTML element. Useful for displaying icons in the
+ * command bar.
  *
  * @param {string} svg
  * @returns {HTMLElement}
@@ -73,11 +61,11 @@ export class CommandBar extends HTMLElement {
 
   /**
    * @type {import("nanostores").MapStore<{
-   *  commands: Command[];
-   *  focusedResult: number;
-   *  mostRecent: Command | null;
-   *  open: boolean;
-   *  query: string;
+   *   commands: Command[];
+   *   focusedResult: number;
+   *   mostRecent: Command | null;
+   *   open: boolean;
+   *   query: string;
    * }>}
    */
   #state = map({
@@ -108,9 +96,7 @@ export class CommandBar extends HTMLElement {
         // Do not include the same item twice if it's already included via chord
         if (matchingChord && matchingChord.id === i.id) return false;
 
-        const commandStr = [i.name, ...(i.alias ?? []), i.groupName ?? ""]
-          .join(" ")
-          .toLowerCase();
+        const commandStr = [i.name, ...(i.alias ?? []), i.groupName ?? ""].join(" ").toLowerCase();
 
         return queryTokens.every((token) => commandStr.includes(token));
       })
@@ -134,9 +120,7 @@ export class CommandBar extends HTMLElement {
   }
 
   get emptyMessage() {
-    return (
-      this.getAttribute("emptymessage") ?? "Sorry, couldnʼt find anything."
-    );
+    return this.getAttribute("emptymessage") ?? "Sorry, couldnʼt find anything.";
   }
 
   /** @param {Command[]} toRegister */
@@ -154,9 +138,7 @@ export class CommandBar extends HTMLElement {
 
   /** @param {string[]} toRemove */
   removeCommand(...toRemove) {
-    const next = this.#state
-      .get()
-      .commands.filter((c) => !toRemove.includes(c.id));
+    const next = this.#state.get().commands.filter((c) => !toRemove.includes(c.id));
 
     this.#state.setKey("commands", next);
 
@@ -274,7 +256,7 @@ export class CommandBar extends HTMLElement {
     else this.#toggle(false);
   }
 
-  /** @param {KeyboardEvent} event  */
+  /** @param {KeyboardEvent} event */
   #onQueryChange(event) {
     if (!(event.target instanceof HTMLInputElement)) return;
     this.#state.setKey("query", event.target.value);
@@ -426,8 +408,7 @@ export class CommandBar extends HTMLElement {
             .value="${state.query}"
             placeholder="${state.searchLabel}"
             required
-            @input="${(/** @type {KeyboardEvent} */ event) =>
-              this.#onQueryChange(event)}"
+            @input="${(/** @type {KeyboardEvent} */ event) => this.#onQueryChange(event)}"
           />
         </label>
       </header>

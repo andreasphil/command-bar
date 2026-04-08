@@ -5,8 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Command Bar Demo</title>
     <style>
-      @import url("node_modules/@andreasphil/design-system/dist/design-system.css")
-      layer(theme);
+      @import url("node_modules/@andreasphil/design-system/dist/design-system.css") layer(theme);
 
       @import url("node_modules/@andreasphil/design-system/dist/design-system-utils.css");
 
@@ -49,11 +48,9 @@
       }${animal ? ` ${animal}` : " animal"}.`;
     }
 
-    document
-      .querySelector("#command-bar-launcher")
-      .addEventListener("click", () => {
-        CommandBar.instance.open();
-      });
+    document.querySelector("#command-bar-launcher").addEventListener("click", () => {
+      CommandBar.instance.open();
+    });
 
     CommandBar.instance.registerCommand(
       {

@@ -29,11 +29,7 @@ npm i github:andreasphil/command-bar#<tag>
 
 The command bar currently relies on styles from `@andreasphil/design-system`:
 
-```css
-@import "@andreasphil/design-system/style.css" layer(theme);
-```
-
-Then import the component and `define` it:
+Import the component and `define` it:
 
 ```ts
 import { CommandBar } from "@andreasphil/command-bar";
