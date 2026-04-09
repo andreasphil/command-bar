@@ -537,7 +537,7 @@ var map = /* @__NO_SIDE_EFFECTS__ */ (initial = {}) => {
 	return $map;
 };
 //#endregion
-//#region mod.js
+//#region src/commandBar.js
 /**
 * @typedef Command
 * @property {string} id The unique identifier of the command. Can be any string.

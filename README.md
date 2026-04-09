@@ -22,12 +22,14 @@ import { CommandBar } from "https://esm.sh/gh/andreasphil/command-bar@<tag>";
 With a package manager:
 
 ```sh
-npm i github:andreasphil/command-bar#<tag>
+pnpm i github:andreasphil/command-bar#<tag>
 ```
 
 ## Usage
 
-The command bar currently relies on styles from `@andreasphil/design-system`:
+> [!NOTE]
+>
+> The component currently relies on styles from my [CSS framework](https://github.com/andreasphil/design-system).
 
 Import the component and `define` it:
 
@@ -62,7 +64,7 @@ cleanup = CommandBar.instance.registerCommand({
 
 ### API
 
-See [mod.d.ts](./dist/mod.d.ts) for all available methods and docs.
+See [commandBar.d.ts](./dist/commandBar.d.ts) for all available methods and docs.
 
 ## Development
 

@@ -4,9 +4,9 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Command Bar Demo</title>
+
     <style>
       @import url("node_modules/@andreasphil/design-system/dist/design-system.css") layer(theme);
-
       @import url("node_modules/@andreasphil/design-system/dist/design-system-utils.css");
 
       #app {
@@ -17,15 +17,17 @@
 
   <body>
     <div id="app">
-      <h1>Command Bar Demo</h1>
-      <button id="command-bar-launcher">Press ⌘K or click here</button>
-      <command-bar></command-bar>
-      <p id="result"></p>
+      <main>
+        <h1>Command Bar Demo</h1>
+        <button id="command-bar-launcher">Press ⌘K or click here</button>
+        <command-bar></command-bar>
+        <p id="result"></p>
+      </main>
     </div>
   </body>
 
   <script type="module">
-    import { CommandBar } from "./mod.js";
+    import { CommandBar } from "./src/commandBar.js";
 
     CommandBar.define();
 
