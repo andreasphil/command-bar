@@ -313,14 +313,14 @@ var i = class {
 	}
 });
 //#endregion
-//#region node_modules/.pnpm/nanostores@1.2.0/node_modules/nanostores/clean-stores/index.js
+//#region node_modules/.pnpm/nanostores@1.3.0/node_modules/nanostores/clean-stores/index.js
 var clean = Symbol("clean");
 //#endregion
-//#region node_modules/.pnpm/nanostores@1.2.0/node_modules/nanostores/atom/index.js
+//#region node_modules/.pnpm/nanostores@1.3.0/node_modules/nanostores/atom/index.js
 var listenerQueue = [];
 var lqIndex = 0;
 var QUEUE_ITEMS_PER_LISTENER = 4;
-var epoch = 0;
+var nanostoresGlobal = globalThis.nanostoresGlobal ||= { epoch: 0 };
 var atom = /* @__NO_SIDE_EFFECTS__ */ (initialValue) => {
 	let listeners = [];
 	let $atom = {
@@ -343,7 +343,7 @@ var atom = /* @__NO_SIDE_EFFECTS__ */ (initialValue) => {
 			};
 		},
 		notify(oldValue, changedKey) {
-			epoch++;
+			nanostoresGlobal.epoch++;
 			let runListenerQueue = !listenerQueue.length;
 			for (let listener of listeners) listenerQueue.push(listener, $atom.value, oldValue, changedKey);
 			if (runListenerQueue) {
@@ -374,7 +374,7 @@ var atom = /* @__NO_SIDE_EFFECTS__ */ (initialValue) => {
 	return $atom;
 };
 //#endregion
-//#region node_modules/.pnpm/nanostores@1.2.0/node_modules/nanostores/lifecycle/index.js
+//#region node_modules/.pnpm/nanostores@1.3.0/node_modules/nanostores/lifecycle/index.js
 var MOUNT = 5;
 var UNMOUNT = 6;
 var REVERT_MUTATION = 10;
@@ -442,7 +442,7 @@ var onMount = ($store, initialize) => {
 	});
 };
 //#endregion
-//#region node_modules/.pnpm/nanostores@1.2.0/node_modules/nanostores/warn/index.js
+//#region node_modules/.pnpm/nanostores@1.3.0/node_modules/nanostores/warn/index.js
 var warned = {};
 function warn(text) {
 	if (!warned[text]) {
@@ -455,14 +455,14 @@ function warn(text) {
 	}
 }
 //#endregion
-//#region node_modules/.pnpm/nanostores@1.2.0/node_modules/nanostores/computed/index.js
+//#region node_modules/.pnpm/nanostores@1.3.0/node_modules/nanostores/computed/index.js
 var computedStore = (stores, cb, batched) => {
 	if (!Array.isArray(stores)) stores = [stores];
 	let previousArgs;
 	let currentEpoch;
 	let set = () => {
-		if (currentEpoch === epoch) return;
-		currentEpoch = epoch;
+		if (currentEpoch === nanostoresGlobal.epoch) return;
+		currentEpoch = nanostoresGlobal.epoch;
 		let args = stores.map(($store) => $store.get());
 		if (!previousArgs || args.some((arg, i) => arg !== previousArgs[i])) {
 			previousArgs = args;
@@ -474,7 +474,7 @@ var computedStore = (stores, cb, batched) => {
 				});
 			} else {
 				$computed.set(value);
-				currentEpoch = epoch;
+				currentEpoch = nanostoresGlobal.epoch;
 			}
 		}
 	};
@@ -500,7 +500,7 @@ var computedStore = (stores, cb, batched) => {
 };
 var computed = /* @__NO_SIDE_EFFECTS__ */ (stores, fn) => computedStore(stores, fn);
 //#endregion
-//#region node_modules/.pnpm/nanostores@1.2.0/node_modules/nanostores/effect/index.js
+//#region node_modules/.pnpm/nanostores@1.3.0/node_modules/nanostores/effect/index.js
 var effect = (stores, callback) => {
 	if (!Array.isArray(stores)) stores = [stores];
 	let unbinds = [];
@@ -517,7 +517,7 @@ var effect = (stores, callback) => {
 	};
 };
 //#endregion
-//#region node_modules/.pnpm/nanostores@1.2.0/node_modules/nanostores/map/index.js
+//#region node_modules/.pnpm/nanostores@1.3.0/node_modules/nanostores/map/index.js
 var map = /* @__NO_SIDE_EFFECTS__ */ (initial = {}) => {
 	let $map = /* @__PURE__ */ atom(initial);
 	$map.setKey = function(key, value) {
