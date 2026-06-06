@@ -13,13 +13,13 @@
     }
   },
   "scripts": {
+    "build": "node --run build:bundle && node --run build:types",
+    "build:bundle": "vite build",
+    "build:types": "tsc",
     "dev": "vite",
+    "preversion": "node --run test && node --run build && git add dist/",
     "test": "node --test",
     "test:watch": "node --test --watch",
-    "build": "node --run build:bundle && node --run build:types",
-    "build:types": "tsc",
-    "build:bundle": "vite build",
-    "preversion": "node --run test && node --run build && git add dist/",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
