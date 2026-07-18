@@ -68,7 +68,7 @@ See [commandBar.d.ts](./dist/commandBar.d.ts) for all available methods and docs
 
 ## Development
 
-Packages are managed by [pnpm](https://pnpm.io). Tests are powered by [Node.js' test runner](https://nodejs.org/en/learn/test-runner/introduction). The following commands are available:
+Packages are managed with [pnpm](https://pnpm.io). Tests are powered by [Node.js' test runner](https://nodejs.org/en/learn/test-runner/introduction). The following commands are available:
 
 ```sh
 node --run dev          # Start development server
