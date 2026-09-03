@@ -1,3 +1,43 @@
+export type Command = {
+    /**
+     * The unique identifier of the command. Can be any string.
+     */
+    id: string;
+    /**
+     * The visible name of the command.
+     */
+    name: string;
+    /**
+     * A list of aliases of the command. If the user searches for one of
+     * them, the alias will be treated as if it was the name of the command.
+     */
+    alias?: string[];
+    /**
+     * A unique combination of characters. If the user types those exact
+     * characters in the search field, the associated command will be shown prominently and
+     * highlighted.
+     */
+    chord?: string;
+    /**
+     * An additional label displayed before the name.
+     */
+    groupName?: string;
+    /**
+     * Icon of the command. Should be a string (which will be
+     * inserted as text content) or an HTML element (which will be inserted as-is).
+     */
+    icon?: string | HTMLElement;
+    /**
+     * Callback to run when the command is invoked.
+     */
+    action: () => void;
+    /**
+     * Used for sorting. Items with a higher weight will always appear
+     * before items with a lower weight.
+     */
+    weight?: number;
+};
+export type KeyboardShortcut = Partial<Pick<KeyboardEvent, "key" | "metaKey" | "altKey" | "ctrlKey" | "shiftKey">>;
 /**
  * @typedef Command
  * @property {string} id The unique identifier of the command. Can be any string.
@@ -22,8 +62,9 @@
  * @param {string} svg
  * @returns {HTMLElement}
  */
-export function renderSvgFromString(svg: string): HTMLElement;
-export class CommandBar extends HTMLElement {
+export declare function renderSvgFromString(svg: string): HTMLElement;
+export declare class CommandBar extends HTMLElement {
+    #private;
     static tag: string;
     static define(tag?: string): void;
     static get instance(): CommandBar;
@@ -37,47 +78,7 @@ export class CommandBar extends HTMLElement {
     /** @param {string[]} toRemove */
     removeCommand(...toRemove: string[]): void;
     open(initialQuery?: string): void;
+    constructor();
     connectedCallback(): void;
     disconnectedCallback(): void;
-    #private;
 }
-export type Command = {
-    /**
-     * The unique identifier of the command. Can be any string.
-     */
-    id: string;
-    /**
-     * The visible name of the command.
-     */
-    name: string;
-    /**
-     * A list of aliases of the command. If the user searches for one of
-     * them, the alias will be treated as if it was the name of the command.
-     */
-    alias?: string[] | undefined;
-    /**
-     * A unique combination of characters. If the user types those exact
-     * characters in the search field, the associated command will be shown prominently and
-     * highlighted.
-     */
-    chord?: string | undefined;
-    /**
-     * An additional label displayed before the name.
-     */
-    groupName?: string | undefined;
-    /**
-     * Icon of the command. Should be a string (which will be
-     * inserted as text content) or an HTML element (which will be inserted as-is).
-     */
-    icon?: string | HTMLElement | undefined;
-    /**
-     * Callback to run when the command is invoked.
-     */
-    action: () => void;
-    /**
-     * Used for sorting. Items with a higher weight will always appear
-     * before items with a lower weight.
-     */
-    weight?: number | undefined;
-};
-export type KeyboardShortcut = Partial<Pick<KeyboardEvent, "key" | "metaKey" | "altKey" | "ctrlKey" | "shiftKey">>;

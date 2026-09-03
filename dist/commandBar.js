@@ -1,17 +1,40 @@
-//#region node_modules/.pnpm/lit-html@3.3.2/node_modules/lit-html/lit-html.js
+//#region node_modules/.pnpm/lit-html@3.3.3/node_modules/lit-html/lit-html.js
 /**
 * @license
 * Copyright 2017 Google LLC
 * SPDX-License-Identifier: BSD-3-Clause
 */
-var t$1 = globalThis, i$1 = (t) => t, s = t$1.trustedTypes, e$2 = s ? s.createPolicy("lit-html", { createHTML: (t) => t }) : void 0, h = "$lit$", o = `lit$${Math.random().toFixed(9).slice(2)}$`, n = "?" + o, r = `<${n}>`, l = document, c = () => l.createComment(""), a = (t) => null === t || "object" != typeof t && "function" != typeof t, u = Array.isArray, d = (t) => u(t) || "function" == typeof t?.[Symbol.iterator], f = "[ 	\n\f\r]", v = /<(?:(!--|\/[^a-zA-Z])|(\/?[a-zA-Z][^>\s]*)|(\/?$))/g, _ = /-->/g, m = />/g, p = RegExp(`>|${f}(?:([^\\s"'>=/]+)(${f}*=${f}*(?:[^ \t\n\f\r"'\`<>=]|("|')|))|$)`, "g"), g = /'/g, $ = /"/g, y = /^(?:script|style|textarea|title)$/i, x = (t) => (i, ...s) => ({
+var t$1 = globalThis;
+var i$1 = (t) => t;
+var s = t$1.trustedTypes;
+var e$2 = s ? s.createPolicy("lit-html", { createHTML: (t) => t }) : void 0;
+var h = "$lit$";
+var o = `lit$${Math.random().toFixed(9).slice(2)}$`;
+var n = "?" + o;
+var r = `<${n}>`;
+var l = document;
+var c = () => l.createComment("");
+var a = (t) => null === t || "object" != typeof t && "function" != typeof t;
+var u = Array.isArray;
+var d = (t) => u(t) || "function" == typeof t?.[Symbol.iterator];
+var f = "[ 	\n\f\r]";
+var v = /<(?:(!--|\/[^a-zA-Z])|(\/?[a-zA-Z][^>\s]*)|(\/?$))/g;
+var _ = /-->/g;
+var m = />/g;
+var p = RegExp(`>|${f}(?:([^\\s"'>=/]+)(${f}*=${f}*(?:[^ \t\n\f\r"'\`<>=]|("|')|))|$)`, "g");
+var g = /'/g;
+var $ = /"/g;
+var y = /^(?:script|style|textarea|title)$/i;
+var x = (t) => (i, ...s) => ({
 	_$litType$: t,
 	strings: i,
 	values: s
-}), b = x(1);
-x(2);
-x(3);
-var E = Symbol.for("lit-noChange"), A = Symbol.for("lit-nothing"), C = /* @__PURE__ */ new WeakMap(), P = l.createTreeWalker(l, 129);
+});
+var b = x(1);
+var E = Symbol.for("lit-noChange");
+var A = Symbol.for("lit-nothing");
+var C = /* @__PURE__ */ new WeakMap();
+var P = l.createTreeWalker(l, 129);
 function V(t, i) {
 	if (!u(t) || !t.hasOwnProperty("raw")) throw Error("invalid template strings array");
 	return void 0 !== e$2 ? e$2.createHTML(i) : i;
@@ -240,8 +263,9 @@ var Z = class {
 	_$AI(t) {
 		M(this, t);
 	}
-}, B = t$1.litHtmlPolyfillSupport;
-B?.(S, k), (t$1.litHtmlVersions ??= []).push("3.3.2");
+};
+var B = t$1.litHtmlPolyfillSupport;
+B?.(S, k), (t$1.litHtmlVersions ??= []).push("3.3.3");
 var D = (t, i, s) => {
 	const e = s?.renderBefore ?? i;
 	let h = e._$litPart$;
@@ -252,7 +276,7 @@ var D = (t, i, s) => {
 	return h._$AI(t), h;
 };
 //#endregion
-//#region node_modules/.pnpm/lit-html@3.3.2/node_modules/lit-html/directive.js
+//#region node_modules/.pnpm/lit-html@3.3.3/node_modules/lit-html/directive.js
 /**
 * @license
 * Copyright 2017 Google LLC
@@ -265,7 +289,8 @@ var t = {
 	BOOLEAN_ATTRIBUTE: 4,
 	EVENT: 5,
 	ELEMENT: 6
-}, e$1 = (t) => (...e) => ({
+};
+var e$1 = (t) => (...e) => ({
 	_$litDirective$: t,
 	values: e
 });
@@ -285,7 +310,7 @@ var i = class {
 	}
 };
 //#endregion
-//#region node_modules/.pnpm/lit-html@3.3.2/node_modules/lit-html/directives/class-map.js
+//#region node_modules/.pnpm/lit-html@3.3.3/node_modules/lit-html/directives/class-map.js
 /**
 * @license
 * Copyright 2018 Google LLC
@@ -313,17 +338,31 @@ var i = class {
 	}
 });
 //#endregion
-//#region node_modules/.pnpm/nanostores@1.3.0/node_modules/nanostores/clean-stores/index.js
-var clean = Symbol("clean");
-//#endregion
-//#region node_modules/.pnpm/nanostores@1.3.0/node_modules/nanostores/atom/index.js
+//#region node_modules/.pnpm/nanostores@1.5.3/node_modules/nanostores/atom/index.js
 var listenerQueue = [];
 var lqIndex = 0;
+var batchSeen = null;
 var QUEUE_ITEMS_PER_LISTENER = 4;
 var nanostoresGlobal = globalThis.nanostoresGlobal ||= { epoch: 0 };
+var drainQueue = () => {
+	let thrown;
+	let i;
+	while (lqIndex < listenerQueue.length) {
+		i = lqIndex;
+		lqIndex += QUEUE_ITEMS_PER_LISTENER;
+		try {
+			listenerQueue[i](listenerQueue[i + 1].value, listenerQueue[i + 2], listenerQueue[i + 3]);
+		} catch (e) {
+			thrown = e;
+		}
+	}
+	listenerQueue.length = lqIndex = 0;
+	if (thrown) throw thrown;
+};
 var atom = /* @__NO_SIDE_EFFECTS__ */ (initialValue) => {
 	let listeners = [];
 	let $atom = {
+		eq: Object.is,
 		get() {
 			if (!$atom.lc) $atom.listen(() => {})();
 			return $atom.value;
@@ -333,7 +372,7 @@ var atom = /* @__NO_SIDE_EFFECTS__ */ (initialValue) => {
 		listen(listener) {
 			$atom.lc = listeners.push(listener);
 			return () => {
-				for (let i = lqIndex + QUEUE_ITEMS_PER_LISTENER; i < listenerQueue.length;) if (listenerQueue[i] === listener) listenerQueue.splice(i, QUEUE_ITEMS_PER_LISTENER);
+				for (let i = lqIndex; i < listenerQueue.length;) if (listenerQueue[i] === listener) listenerQueue.splice(i, QUEUE_ITEMS_PER_LISTENER);
 				else i += QUEUE_ITEMS_PER_LISTENER;
 				let index = listeners.indexOf(listener);
 				if (~index) {
@@ -344,17 +383,18 @@ var atom = /* @__NO_SIDE_EFFECTS__ */ (initialValue) => {
 		},
 		notify(oldValue, changedKey) {
 			nanostoresGlobal.epoch++;
-			let runListenerQueue = !listenerQueue.length;
-			for (let listener of listeners) listenerQueue.push(listener, $atom.value, oldValue, changedKey);
-			if (runListenerQueue) {
-				for (lqIndex = 0; lqIndex < listenerQueue.length; lqIndex += QUEUE_ITEMS_PER_LISTENER) listenerQueue[lqIndex](listenerQueue[lqIndex + 1], listenerQueue[lqIndex + 2], listenerQueue[lqIndex + 3]);
-				listenerQueue.length = 0;
+			let runListenerQueue = !listenerQueue.length && !batchSeen;
+			for (let listener of listeners) {
+				if (batchSeen?.has(listener)) continue;
+				batchSeen?.add(listener);
+				listenerQueue.push(listener, $atom, oldValue, batchSeen ? void 0 : changedKey);
 			}
+			if (runListenerQueue) drainQueue();
 		},
 		off() {},
 		set(newValue) {
 			let oldValue = $atom.value;
-			if (oldValue !== newValue) {
+			if (!$atom.eq(oldValue, newValue)) {
 				$atom.value = newValue;
 				$atom.notify(oldValue);
 			}
@@ -366,15 +406,10 @@ var atom = /* @__NO_SIDE_EFFECTS__ */ (initialValue) => {
 		},
 		value: initialValue
 	};
-	if (process.env.NODE_ENV !== "production") $atom[clean] = () => {
-		listeners = [];
-		$atom.lc = 0;
-		$atom.off();
-	};
 	return $atom;
 };
 //#endregion
-//#region node_modules/.pnpm/nanostores@1.3.0/node_modules/nanostores/lifecycle/index.js
+//#region node_modules/.pnpm/nanostores@1.5.3/node_modules/nanostores/lifecycle/index.js
 var MOUNT = 5;
 var UNMOUNT = 6;
 var REVERT_MUTATION = 10;
@@ -391,11 +426,12 @@ var on = (object, listener, eventKey, mutateStore) => {
 	return () => {
 		let currentListeners = object.events[eventKey];
 		let index = currentListeners.indexOf(listener);
-		currentListeners.splice(index, 1);
-		if (!currentListeners.length) {
-			delete object.events[eventKey];
-			object.events[eventKey + REVERT_MUTATION]();
-			delete object.events[eventKey + REVERT_MUTATION];
+		if (~index) {
+			currentListeners.splice(index, 1);
+			if (!currentListeners.length) {
+				object.events[eventKey + REVERT_MUTATION]();
+				delete object.events[eventKey + REVERT_MUTATION];
+			}
 		}
 	};
 };
@@ -426,15 +462,6 @@ var onMount = ($store, initialize) => {
 				}
 			}, STORE_UNMOUNT_DELAY);
 		};
-		if (process.env.NODE_ENV !== "production") {
-			let originClean = $store[clean];
-			$store[clean] = () => {
-				for (let destroy of $store.events[UNMOUNT]) destroy();
-				$store.events[UNMOUNT] = [];
-				$store.active = false;
-				originClean();
-			};
-		}
 		return () => {
 			$store.listen = originListen;
 			$store.off = originOff;
@@ -442,20 +469,7 @@ var onMount = ($store, initialize) => {
 	});
 };
 //#endregion
-//#region node_modules/.pnpm/nanostores@1.3.0/node_modules/nanostores/warn/index.js
-var warned = {};
-function warn(text) {
-	if (!warned[text]) {
-		warned[text] = true;
-		if (typeof console !== "undefined" && console.warn) {
-			console.groupCollapsed("Nano Stores: " + text);
-			console.trace("Source of deprecated call");
-			console.groupEnd();
-		}
-	}
-}
-//#endregion
-//#region node_modules/.pnpm/nanostores@1.3.0/node_modules/nanostores/computed/index.js
+//#region node_modules/.pnpm/nanostores@1.5.3/node_modules/nanostores/computed/index.js
 var computedStore = (stores, cb, batched) => {
 	if (!Array.isArray(stores)) stores = [stores];
 	let previousArgs;
@@ -464,21 +478,19 @@ var computedStore = (stores, cb, batched) => {
 		if (currentEpoch === nanostoresGlobal.epoch) return;
 		currentEpoch = nanostoresGlobal.epoch;
 		let args = stores.map(($store) => $store.get());
-		if (!previousArgs || args.some((arg, i) => arg !== previousArgs[i])) {
+		if (!previousArgs?.every((arg, i) => stores[i].eq(arg, args[i]))) {
 			previousArgs = args;
 			let value = cb(...args);
-			if (value && value.then && value.t) {
-				if (process.env.NODE_ENV !== "production") warn("Use @nanostores/async for async computed. We will remove Promise support in computed() in Nano Stores 2.0");
-				value.then((asyncValue) => {
-					if (previousArgs === args) $computed.set(asyncValue);
-				});
-			} else {
+			if (value && value.then && value.t) value.then((asyncValue) => {
+				if (previousArgs === args) $computed.set(asyncValue);
+			});
+			else {
 				$computed.set(value);
 				currentEpoch = nanostoresGlobal.epoch;
 			}
 		}
 	};
-	let $computed = /* @__PURE__ */ atom(void 0);
+	let $computed = /* @__PURE__ */ atom();
 	let get = $computed.get;
 	$computed.get = () => {
 		set();
@@ -500,7 +512,7 @@ var computedStore = (stores, cb, batched) => {
 };
 var computed = /* @__NO_SIDE_EFFECTS__ */ (stores, fn) => computedStore(stores, fn);
 //#endregion
-//#region node_modules/.pnpm/nanostores@1.3.0/node_modules/nanostores/effect/index.js
+//#region node_modules/.pnpm/nanostores@1.5.3/node_modules/nanostores/effect/index.js
 var effect = (stores, callback) => {
 	if (!Array.isArray(stores)) stores = [stores];
 	let unbinds = [];
@@ -517,16 +529,17 @@ var effect = (stores, callback) => {
 	};
 };
 //#endregion
-//#region node_modules/.pnpm/nanostores@1.3.0/node_modules/nanostores/map/index.js
+//#region node_modules/.pnpm/nanostores@1.5.3/node_modules/nanostores/map/index.js
 var map = /* @__NO_SIDE_EFFECTS__ */ (initial = {}) => {
 	let $map = /* @__PURE__ */ atom(initial);
+	$map.eqKey = Object.is;
 	$map.setKey = function(key, value) {
 		let oldMap = $map.value;
 		if (typeof value === "undefined" && key in $map.value) {
 			$map.value = { ...$map.value };
 			delete $map.value[key];
 			$map.notify(oldMap, key);
-		} else if ($map.value[key] !== value) {
+		} else if (!$map.eqKey($map.value[key], value, key)) {
 			$map.value = {
 				...$map.value,
 				[key]: value
@@ -654,8 +667,10 @@ var CommandBar = class CommandBar extends HTMLElement {
 		super();
 	}
 	connectedCallback() {
+		this.#disconnectedController = new AbortController();
 		addEventListener("keydown", (e) => this.#onToggleShortcut(e), { signal: this.#disconnectedController.signal });
 		addEventListener("keydown", (e) => this.#onGlobalKeydown(e), { signal: this.#disconnectedController.signal });
+		this.addEventListener("command", (e) => this.#onCommand(e), { signal: this.#disconnectedController.signal });
 		effect([this.#state, this.#results], () => {
 			this.#render();
 		});
@@ -694,6 +709,10 @@ var CommandBar = class CommandBar extends HTMLElement {
 		this.#toggle();
 		event.preventDefault();
 		event.stopPropagation();
+	}
+	/** @param {CommandEvent} event */
+	#onCommand(event) {
+		if (event.command === "--open") this.open();
 	}
 	/** @param {KeyboardEvent} event */
 	#onGlobalKeydown(event) {
