@@ -55,6 +55,17 @@ describe("CommandBar", () => {
     el.dispatchEvent(new InputEvent("input", { bubbles: true }));
   }
 
+  /**
+   * @param {HTMLElement | null} el
+   * @param {string} command
+   */
+  function invoke(el, command) {
+    if (!el) throw new Error("[invoke] Target does not exist");
+    const event = new Event("command", { cancelable: true, composed: true });
+    Object.assign(event, { command, source: null });
+    el.dispatchEvent(event);
+  }
+
   /** @param {HTMLElement | import("jsdom").DOMWindow | null} el */
   function click(el) {
     if (!el) throw new Error("[click] Target does not exist");
@@ -179,6 +190,40 @@ describe("CommandBar", () => {
 
       assert.equal(action.mock.callCount(), 1);
       assert.equal(close.mock.callCount(), 1);
+    });
+  });
+
+  describe("invoker commands", () => {
+    test("opens on the --open command", () => {
+      const showModal = mock.fn();
+      HTMLDialogElement.prototype.showModal = showModal;
+      const { el } = render();
+
+      invoke(el, "--open");
+      assert.equal(showModal.mock.callCount(), 1);
+    });
+
+    test("ignores unknown commands", () => {
+      const showModal = mock.fn();
+      const close = mock.fn();
+      HTMLDialogElement.prototype.showModal = showModal;
+      HTMLDialogElement.prototype.close = close;
+      const { el } = render();
+
+      invoke(el, "--nope");
+      invoke(el, "show-modal");
+      assert.equal(showModal.mock.callCount(), 0);
+      assert.equal(close.mock.callCount(), 0);
+    });
+
+    test("ignores commands after being disconnected", () => {
+      const showModal = mock.fn();
+      HTMLDialogElement.prototype.showModal = showModal;
+      const { el } = render();
+
+      el.remove();
+      invoke(el, "--open");
+      assert.equal(showModal.mock.callCount(), 0);
     });
   });
 

@@ -170,6 +170,11 @@ export class CommandBar extends HTMLElement {
       signal: this.#disconnectedController.signal,
     });
 
+    // @ts-expect-error TypeScript doesn't assign the correct event type
+    this.addEventListener("command", (e) => this.#onCommand(e), {
+      signal: this.#disconnectedController.signal,
+    });
+
     effect([this.#state, this.#results], () => {
       this.#render();
     });
@@ -222,6 +227,11 @@ export class CommandBar extends HTMLElement {
     this.#toggle();
     event.preventDefault();
     event.stopPropagation();
+  }
+
+  /** @param {CommandEvent} event */
+  #onCommand(event) {
+    if (event.command === "--open") this.open();
   }
 
   /** @param {KeyboardEvent} event */

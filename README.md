@@ -62,6 +62,14 @@ cleanup = CommandBar.instance.registerCommand({
 });
 ```
 
+You can also open the command bar via [Invoker Commands](https://developer.mozilla.org/en-US/docs/Web/API/Invoker_Commands_API):
+
+```html
+<command-bar id="cmd"></command-bar>
+
+<button commandfor="cmd" command="--open">Open</button>
+```
+
 ### API
 
 See [commandBar.d.ts](./dist/commandBar.d.ts) for all available methods and docs.

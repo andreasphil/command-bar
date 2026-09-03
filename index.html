@@ -19,8 +19,8 @@
     <div id="app">
       <main>
         <h1>Command Bar Demo</h1>
-        <button id="command-bar-launcher">Press ⌘K or click here</button>
-        <command-bar></command-bar>
+        <button commandfor="cmd" command="--open">Press ⌘K or click here</button>
+        <command-bar id="cmd"></command-bar>
         <p id="result"></p>
       </main>
     </div>
@@ -49,10 +49,6 @@
         color ?? ""
       }${animal ? ` ${animal}` : " animal"}.`;
     }
-
-    document.querySelector("#command-bar-launcher").addEventListener("click", () => {
-      CommandBar.instance.open();
-    });
 
     CommandBar.instance.registerCommand(
       {
