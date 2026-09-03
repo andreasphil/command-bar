@@ -10,4 +10,7 @@ export default defineConfig({
     minify: false,
     target: "esnext",
   },
+  define: {
+    "process.env.NODE_ENV": '"production"',
+  },
 });
