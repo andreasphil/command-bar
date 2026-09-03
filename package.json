@@ -24,15 +24,15 @@
   },
   "dependencies": {
     "@andreasphil/design-system": "github:andreasphil/design-system#v0.61.0",
-    "lit-html": "^3.3.3",
-    "nanostores": "^1.4.2"
+    "lit-html": "3.3.3",
+    "nanostores": "1.5.3"
   },
   "devDependencies": {
-    "@types/jsdom": "^28.0.3",
-    "@types/node": "^26.1.2",
-    "jsdom": "^30.0.1",
-    "typescript": "^7.0.2",
-    "vite": "^8.2.1"
+    "@types/jsdom": "30.0.0",
+    "@types/node": "26.4.1",
+    "jsdom": "30.0.1",
+    "typescript": "7.0.2",
+    "vite": "8.2.2"
   },
   "bundleDependencies": [
     "lit-html",
