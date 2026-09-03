@@ -162,6 +162,8 @@ export class CommandBar extends HTMLElement {
   }
 
   connectedCallback() {
+    this.#disconnectedController = new AbortController();
+
     addEventListener("keydown", (e) => this.#onToggleShortcut(e), {
       signal: this.#disconnectedController.signal,
     });
