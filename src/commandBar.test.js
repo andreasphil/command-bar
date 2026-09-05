@@ -578,7 +578,7 @@ describe("CommandBar", () => {
       assert($$("button")[0].className.includes("focused"));
     });
 
-    test("doesn't move focus before the first item", async () => {
+    test("moves focus to the last item when going up from the first", async () => {
       const { el, $, $$ } = render();
 
       el.registerCommand(
@@ -593,7 +593,8 @@ describe("CommandBar", () => {
       assert($$("button")[0].className.includes("focused"));
 
       keyboard(window, { key: "ArrowUp" });
-      assert($$("button")[0].className.includes("focused"));
+      assert.equal($$(".focused").length, 1);
+      assert($$("button")[2].className.includes("focused"));
     });
 
     test("doesn't move focus past the last item", async () => {

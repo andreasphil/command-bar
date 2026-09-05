@@ -291,8 +291,10 @@ export class CommandBar extends HTMLElement {
   }
 
   #moveFocusUp() {
+    const commandCount = this.#results.get().length;
+    if (commandCount === 0) return;
     const next = this.#state.get().focusedResult - 1;
-    this.#state.setKey("focusedResult", Math.max(next, 0));
+    this.#state.setKey("focusedResult", next < 0 ? commandCount - 1 : next);
   }
 
   #runFocusedCommand() {
