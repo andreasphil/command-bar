@@ -271,6 +271,15 @@ export class CommandBar extends HTMLElement {
   /** @param {KeyboardEvent} event */
   #onQueryChange(event) {
     if (!(event.target instanceof HTMLInputElement)) return;
+
+    // The input is still part of the document while the dialog is closed, so it can receive
+    // events we don't want to react to. Reset it to the current query to keep the field and
+    // the state in sync.
+    if (!this.#state.get().open) {
+      event.target.value = this.#state.get().query;
+      return;
+    }
+
     this.#state.setKey("query", event.target.value);
   }
 

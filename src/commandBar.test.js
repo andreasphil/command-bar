@@ -423,6 +423,32 @@ describe("CommandBar", () => {
       assert($$("button")[0].className.includes("focused"));
     });
 
+    test("ignores input while the command bar is closed", async () => {
+      const { el, $, $$ } = render();
+
+      el.registerCommand({ id: "1", name: "1A", action: mock.fn() });
+
+      input($("input"), "a");
+      assert.equal($("input").value, "");
+      assert.equal($$("button").length, 0);
+    });
+
+    test("ignores input after the command bar was closed", async () => {
+      const { el, $, $$ } = render();
+
+      el.registerCommand({ id: "1", name: "1A", action: mock.fn() });
+
+      el.open();
+      input($("input"), "a");
+      assert.equal($$("button").length, 1);
+
+      keyboard(window, { key: "Escape" });
+      keyboard(window, { key: "Escape" });
+      input($("input"), "a");
+      assert.equal($("input").value, "");
+      assert.equal($$("button").length, 0);
+    });
+
     test("doesn't show commands when the search is empty", async () => {
       const { el, $$ } = render();
 
