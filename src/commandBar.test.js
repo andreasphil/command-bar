@@ -178,6 +178,21 @@ describe("CommandBar", () => {
       assert.equal(close.mock.callCount(), 1);
     });
 
+    test("resets the state when the dialog closes on its own", async () => {
+      const showModal = mock.fn();
+      HTMLDialogElement.prototype.showModal = showModal;
+      const { el, $ } = render();
+
+      el.open("foo");
+      assert.equal($("input").value, "foo");
+
+      $("dialog").dispatchEvent(new Event("close"));
+      assert.equal($("input").value, "");
+
+      keyboard(window, { metaKey: true, key: "k" });
+      assert.equal(showModal.mock.callCount(), 2);
+    });
+
     test("closes when a command is run", async () => {
       const action = mock.fn();
       const close = mock.fn();

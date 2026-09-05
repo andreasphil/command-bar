@@ -201,10 +201,15 @@ export class CommandBar extends HTMLElement {
       this.#state.setKey("open", true);
     } else {
       this.#dialog?.close();
-      this.#state.setKey("focusedResult", 0);
-      this.#state.setKey("open", false);
-      this.#state.setKey("query", "");
+      this.#onDialogClose();
     }
+  }
+
+  #onDialogClose() {
+    if (!this.#state.get().open) return;
+    this.#state.setKey("focusedResult", 0);
+    this.#state.setKey("open", false);
+    this.#state.setKey("query", "");
   }
 
   /** @param {KeyboardEvent} event */
@@ -327,7 +332,7 @@ export class CommandBar extends HTMLElement {
    * @param {string} state.searchLabel
    */
   #template = (state) =>
-    html`<dialog>
+    html`<dialog @close="${() => this.#onDialogClose()}">
       <style>
         @scope {
           :scope {
