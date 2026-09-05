@@ -354,6 +354,9 @@ export class CommandBar extends HTMLElement {
           }
 
           ul {
+            display: flex;
+            flex-direction: column;
+            gap: 0.125rem;
             list-style-type: none;
             margin: 0.75rem 0 0 0;
             padding: 0;
