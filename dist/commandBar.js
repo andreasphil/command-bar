@@ -1,4 +1,4 @@
-//#region node_modules/.pnpm/lit-html@3.3.3/node_modules/lit-html/lit-html.js
+// node_modules/.pnpm/lit-html@3.3.3/node_modules/lit-html/lit-html.js
 /**
 * @license
 * Copyright 2017 Google LLC
@@ -275,8 +275,7 @@ var D = (t, i, s) => {
 	}
 	return h._$AI(t), h;
 };
-//#endregion
-//#region node_modules/.pnpm/lit-html@3.3.3/node_modules/lit-html/directive.js
+// node_modules/.pnpm/lit-html@3.3.3/node_modules/lit-html/directive.js
 /**
 * @license
 * Copyright 2017 Google LLC
@@ -309,8 +308,7 @@ var i = class {
 		return this.render(...e);
 	}
 };
-//#endregion
-//#region node_modules/.pnpm/lit-html@3.3.3/node_modules/lit-html/directives/class-map.js
+// node_modules/.pnpm/lit-html@3.3.3/node_modules/lit-html/directives/class-map.js
 /**
 * @license
 * Copyright 2018 Google LLC
@@ -337,8 +335,7 @@ var i = class {
 		return E;
 	}
 });
-//#endregion
-//#region node_modules/.pnpm/nanostores@1.5.3/node_modules/nanostores/atom/index.js
+// node_modules/.pnpm/nanostores@1.5.5/node_modules/nanostores/atom/index.js
 var listenerQueue = [];
 var lqIndex = 0;
 var batchSeen = null;
@@ -350,6 +347,11 @@ var drainQueue = () => {
 	while (lqIndex < listenerQueue.length) {
 		i = lqIndex;
 		lqIndex += QUEUE_ITEMS_PER_LISTENER;
+		let pendingStores = batchSeen?.get(listenerQueue[i]);
+		if (pendingStores) {
+			if (!pendingStores.has(listenerQueue[i + 1])) continue;
+			pendingStores.clear();
+		}
 		try {
 			listenerQueue[i](listenerQueue[i + 1].value, listenerQueue[i + 2], listenerQueue[i + 3]);
 		} catch (e) {
@@ -372,7 +374,8 @@ var atom = /* @__NO_SIDE_EFFECTS__ */ (initialValue) => {
 		listen(listener) {
 			$atom.lc = listeners.push(listener);
 			return () => {
-				for (let i = lqIndex; i < listenerQueue.length;) if (listenerQueue[i] === listener) listenerQueue.splice(i, QUEUE_ITEMS_PER_LISTENER);
+				batchSeen?.get(listener)?.delete($atom);
+				for (let i = lqIndex; i < listenerQueue.length;) if (listenerQueue[i] === listener && listenerQueue[i + 1] === $atom) listenerQueue.splice(i, QUEUE_ITEMS_PER_LISTENER);
 				else i += QUEUE_ITEMS_PER_LISTENER;
 				let index = listeners.indexOf(listener);
 				if (~index) {
@@ -385,8 +388,12 @@ var atom = /* @__NO_SIDE_EFFECTS__ */ (initialValue) => {
 			nanostoresGlobal.epoch++;
 			let runListenerQueue = !listenerQueue.length && !batchSeen;
 			for (let listener of listeners) {
-				if (batchSeen?.has(listener)) continue;
-				batchSeen?.add(listener);
+				if (batchSeen) {
+					let pendingStores = batchSeen.get(listener);
+					if (!pendingStores) batchSeen.set(listener, pendingStores = /* @__PURE__ */ new Set());
+					if (pendingStores.has($atom)) continue;
+					pendingStores.add($atom);
+				}
 				listenerQueue.push(listener, $atom, oldValue, batchSeen ? void 0 : changedKey);
 			}
 			if (runListenerQueue) drainQueue();
@@ -408,8 +415,7 @@ var atom = /* @__NO_SIDE_EFFECTS__ */ (initialValue) => {
 	};
 	return $atom;
 };
-//#endregion
-//#region node_modules/.pnpm/nanostores@1.5.3/node_modules/nanostores/lifecycle/index.js
+// node_modules/.pnpm/nanostores@1.5.5/node_modules/nanostores/lifecycle/index.js
 var MOUNT = 5;
 var UNMOUNT = 6;
 var REVERT_MUTATION = 10;
@@ -468,8 +474,7 @@ var onMount = ($store, initialize) => {
 		};
 	});
 };
-//#endregion
-//#region node_modules/.pnpm/nanostores@1.5.3/node_modules/nanostores/computed/index.js
+// node_modules/.pnpm/nanostores@1.5.5/node_modules/nanostores/computed/index.js
 var computedStore = (stores, cb, batched) => {
 	if (!Array.isArray(stores)) stores = [stores];
 	let previousArgs;
@@ -511,8 +516,7 @@ var computedStore = (stores, cb, batched) => {
 	return $computed;
 };
 var computed = /* @__NO_SIDE_EFFECTS__ */ (stores, fn) => computedStore(stores, fn);
-//#endregion
-//#region node_modules/.pnpm/nanostores@1.5.3/node_modules/nanostores/effect/index.js
+// node_modules/.pnpm/nanostores@1.5.5/node_modules/nanostores/effect/index.js
 var effect = (stores, callback) => {
 	if (!Array.isArray(stores)) stores = [stores];
 	let unbinds = [];
@@ -521,15 +525,19 @@ var effect = (stores, callback) => {
 		lastRunUnbind && lastRunUnbind();
 		lastRunUnbind = callback(...stores.map((store) => store.get()));
 	};
-	unbinds = stores.map((store) => store.listen(run));
-	run();
+	try {
+		for (let store of stores) unbinds.push(store.listen(run));
+		run();
+	} catch (error) {
+		unbinds.forEach((unbind) => unbind());
+		throw error;
+	}
 	return () => {
 		unbinds.forEach((unbind) => unbind());
 		lastRunUnbind && lastRunUnbind();
 	};
 };
-//#endregion
-//#region node_modules/.pnpm/nanostores@1.5.3/node_modules/nanostores/map/index.js
+// node_modules/.pnpm/nanostores@1.5.5/node_modules/nanostores/map/index.js
 var map = /* @__NO_SIDE_EFFECTS__ */ (initial = {}) => {
 	let $map = /* @__PURE__ */ atom(initial);
 	$map.eqKey = Object.is;
@@ -549,8 +557,7 @@ var map = /* @__NO_SIDE_EFFECTS__ */ (initial = {}) => {
 	};
 	return $map;
 };
-//#endregion
-//#region src/commandBar.js
+// src/commandBar.js
 /**
 * @typedef Command
 * @property {string} id The unique identifier of the command. Can be any string.
@@ -561,7 +568,7 @@ var map = /* @__NO_SIDE_EFFECTS__ */ (initial = {}) => {
 *   characters in the search field, the associated command will be shown prominently and
 *   highlighted.
 * @property {string} [groupName] An additional label displayed before the name.
-* @property {string | HTMLElement} [icon] Icon of the command. Should be a string (which will be
+* @property {string | Element} [icon] Icon of the command. Should be a string (which will be
 *   inserted as text content) or an HTML element (which will be inserted as-is).
 * @property {() => void} action Callback to run when the command is invoked.
 * @property {number} [weight] Used for sorting. Items with a higher weight will always appear
@@ -944,5 +951,4 @@ var CommandBar = class CommandBar extends HTMLElement {
 		}), this);
 	}
 };
-//#endregion
 export { CommandBar, renderSvgFromString };
